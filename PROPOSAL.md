@@ -35,3 +35,28 @@ More specifically, this project will provide a drawing application and a dinosau
 - [The OpenFrameworks book graphics section](https://openframeworks.cc/ofBook/chapters/intro_to_graphics.html): contains a section on drawing that will hopefully be handy.
 - [Dinosaur-facts-api](https://github.com/shultztom/dinosaur-fact-api/blob/master/dinosaurs.json): a json file with numerous dinosaur names and a short fact for each, still does not contain the majority of what would need to be stored for each dinosaur though.
 - [ASCII Art Archive](https://www.asciiart.eu/animals/reptiles/dinosaurs): a website with text art of dinosaurs and other animals, a possible source of illustrations.
+```
+Dimetrodon
+                          _._
+                        _/:|:
+                       /||||||.
+                       ||||||||.
+                      /|||||||||:
+                     /|||||||||||
+                    .|||||||||||||
+                    | ||||||||||||:
+                  _/| |||||||||||||:_=---.._
+                  | | |||||:'''':||  '~-._  '-.
+                _/| | ||'         '-._   _:    ;
+                | | | '               '~~     _;
+                | '                _.=._    _-~
+             _.~                  {     '-_'
+     _.--=.-~       _.._          {_       }
+ _.-~   @-,        {    '-._     _. '~==+  |
+('          }       \_      \_.=~       |  |
+`======='  /_         ~-_    )         <_oo_>
+  `-----~~/ /'===...===' +   /
+         <_oo_>         /  //
+                       /  //
+                      <_oo_>
+```
