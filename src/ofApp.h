@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxGui.h"
+#include "ofxGuiExtended.h"
 #include "ofxJSONElement.h"
 
 using std::string;
@@ -31,18 +31,21 @@ class ofApp : public ofBaseApp {
 		// Flag for if the JSON data was properly loaded.
 		bool json_loaded_ = false;
 
-		ofParameter<bool> show_dino_info_;
+		// The base GUI and panels.
+		ofxGui gui_;
+		ofxGuiPanel* paint_palette_panel_;
+		ofxGuiPanel* utilities_panel_;
+		ofxGuiPanel* dino_info_panel_;
 
-		ofxPanel utilities_panel_;
-		ofxPanel paint_palette_;
-		ofxButton dino_info_button_;
+		// Groups for UI elements.
+		ofxGuiGroup* labels;
 
-		ofxLabel dino_info_label_;
-		ofParameter<std::string> dino_text_;
+		// ofParameters, used to store values that can be set through the UI.
+		ofParameter<string> dino_text_;
 
 		ofxJSONElement dino_info_json_;
 
 		bool LoadJson(string filepath);
 		string RetrieveNewDinoInfo(ofxJSONElement dino_info);
-		void DinoInfoButtonPressed();
+		void DinoInfoButtonToggled(bool& new_val);
 };

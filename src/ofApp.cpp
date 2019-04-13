@@ -12,8 +12,10 @@ bool ofApp::LoadJson(string filepath) {
 
 string ofApp::RetrieveNewDinoInfo(ofxJSONElement dino_info) {
     string dino_info_string;
+    // Randomly select a dinosaur
     int dino_index = rand() % dino_info["dinosaurs"].size();
-    ofLogNotice("ofApp::setup") << dino_index;
+
+    // Put the information together nicely.
     dino_info_string = "Common name: " + dino_info["dinosaurs"][dino_index]["common_name"].asString()
     + "\n" + "Scientific name: " + dino_info["dinosaurs"][dino_index]["scientific_name"].asString()
     + "\n" + "Fact: " + dino_info["dinosaurs"][dino_index]["fact"].asString();
@@ -21,64 +23,62 @@ string ofApp::RetrieveNewDinoInfo(ofxJSONElement dino_info) {
     return dino_info_string;
 }
 
-void ofApp::DinoInfoButtonPressed() {
-    // If we are going to make the label visible, then load new data.
-    if (!show_dino_info_) {
-        // Set a new dinosaur's information to display.
-        string dino_info_string = RetrieveNewDinoInfo(dino_info_json_);
-        if (json_loaded_) {
-            dino_text_.set(dino_info_string);
-        }
-        // Handle JSON data not being loaded.
-        else {
-            dino_text_.set("Unable to load dinosaur JSON data.");
-        }
+void ofApp::DinoInfoButtonToggled(bool& new_val) {
+    // Set a new dinosaur's information to display.
+    string dino_info_string = RetrieveNewDinoInfo(dino_info_json_);
+    if (json_loaded_) {
+        dino_text_.set(dino_info_string);
     }
-
-    // Toggle the visibility of the label.
-    show_dino_info_.set(!show_dino_info_);
+    // Handle JSON data not being loaded.
+    else {
+        dino_text_.set("Unable to load dinosaur JSON data.");
+    }
 }
 
 void ofApp::setup() {
-    ofxBaseGui::setDefaultTextPadding(0);
-
     // Initialize the random number generator seed.
-    srand (time(NULL));
+    srand(time(NULL));
 
-    show_dino_info_.set(false);
+    // Add the panels to the GUI.
+    paint_palette_panel_ = gui_.addPanel("Palette");
+    utilities_panel_ = gui_.addPanel("Utilities");
+    dino_info_panel_ = gui_.addPanel("Dinosaur Facts");
 
-    dino_info_button_.addListener(this,&ofApp::DinoInfoButtonPressed);
+    // Set their default locations to prevent overlapping.
+    paint_palette_panel_->setPosition(20,20);
+	utilities_panel_->setPosition(20,50);
+    dino_info_panel_->setPosition(20, 110);
 
-    utilities_panel_.setup("Dinosaur Facts");
-    // TODO change this to a toggle.
-    utilities_panel_.add(dino_info_button_.setup("Toggle dino info"));
+    // Add toggle for the dinosaur info panel visibility.
+    // Just hook this up to the visibility attribute of the panel directly.
+    utilities_panel_->add(dino_info_panel_->getVisible().set("Show dinosaur facts", false));
+    // Hide the panel by default.
+    dino_info_panel_->getVisible().set(false);
+
+    // Setup labels for dinosaur facts, add them to the dino_info_panel_.
+    labels = dino_info_panel_->addGroup("The basics:");
+    labels->add(dino_text_);
 
     // Flip the flag depending on whether loading the json was successful.
     json_loaded_ = LoadJson(kDinoDataFilepath);
-    dino_info_label_.setup(dino_text_, 500, 400);
 
-    paint_palette_.setup("Palette");
-    paint_palette_.setPosition(0, 50); // sets position to avoid overlaping
-
+    // Set listeners.
+    // Put at end, since otherwise the premature reference to the json object
+    // results in a floating point runtime error.
+    dino_info_panel_->getVisible().addListener(this, &ofApp::DinoInfoButtonToggled);
 }
 
 //--------------------------------------------------------------
 void ofApp::exit(){
-	dino_info_button_.removeListener(this,&ofApp::DinoInfoButtonPressed);
+	dino_info_panel_->getVisible().removeListener(this, &ofApp::DinoInfoButtonToggled);
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
-
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-    utilities_panel_.draw();
-    paint_palette_.draw();
-    if (show_dino_info_) {
-        dino_info_label_.draw();
-    }
 }
 
 //--------------------------------------------------------------

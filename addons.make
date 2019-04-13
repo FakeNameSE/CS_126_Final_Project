@@ -1,1 +1,1 @@
-ofxGui  ofxJSON
+ofxGuiExtended  ofxJSON

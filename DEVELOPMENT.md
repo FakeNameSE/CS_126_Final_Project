@@ -4,17 +4,17 @@
 
 ## Things to add
 ### Core
-- [] Finish exploratory work with the interface and JSON parsing.
+- [x] Finish exploratory work with the interface and JSON parsing.
 - [] Create a basic canvas to draw on.
 - [] Implement saving the image.
 - [] Create an interface to change brush color.
-- [] Add methods to parse and load the JSON data.
-- [] Cleanly handle absent data in the JSON file if necessary.
+- [x] Add methods to parse and load the JSON data.
+- [x] Cleanly handle absent data in the JSON file if necessary.
 - [] Implement useful error handling for these methods.
-- [] Create a dinosaur information label.
-- [] Add a method to convert the JSON data into a beautified string to display in the label.
-- [] Add a button to toggle the visibility of a dinosaur information label.
-- [] Implement a method to randomly select a dinosaur to display information on.
+- [x] Create a dinosaur information label.
+- [x] Add a method to convert the JSON data into a beautified string to display in the label.
+- [x] Add a button to toggle the visibility of a dinosaur information label.
+- [x] Implement a method to randomly select a dinosaur to display information on.
 - [] Work on theming to make the interface look better.
 - [] Refactor the different UI components into groups if it would clean up the code.
 - [] Implement basic keyboard shortcuts.
@@ -45,3 +45,20 @@
 - This last challenge was at last overcome by taking the well worn path of trying something, then changing one little thing, recompiling, and checking if it is still broken, in addition to refining expectations to be better in line with the resources available.
 - Specifically, rather then placing the dinosaur information in a panel, it will instead by placed in a label on the canvas with a toggle-able visibility. A possible avenue to adding images has also presented itself by saving ASCII text art into files with their paths referenced in the JSON file (since JSON does not support multi-line strings).
 - Success! The exploratory mission has reported that a label can be hidden and shown with information from a parsed JSON file.
+
+### April 12, 13th, and 14th
+- The expedition's JSON parsing code was refactored to be cleaner and support failures.
+- The initial success with displaying dinosaur information in a label was met with
+numerous setbacks. First, the expedition encountered excessive padding in the label,
+rendering it useless to display data. Numerous attempts to use API calls to configure this failed.
+- However, just as Hannibal was forced to choose a road less charted to bring fiery
+vengeance upon the impudent Rome, so must we (albeit much less dramatically) traverse
+the treacherous Alps of a non-core GUI addon. The addon ofxGuiExtended has better
+support for these labels, and so after a length hike, the project has been ported
+to use this incompatible library instead. Of particular note was the difficulty in
+setting up a toggle and listener to modify the visibility of the panel. After the
+mysterious `floating point runtime error` was discovered to be a JSON error and
+cryptic compilation messages shed light on the expected method signature of
+listener functions for boolean parameters (different from other listeners, they
+must take the new value as an argument), displaying dinosaur data with a toggle
+at last works.
