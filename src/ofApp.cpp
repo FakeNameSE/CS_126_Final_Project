@@ -87,8 +87,37 @@ void ofApp::update() {
 void ofApp::drawGui(ofEventArgs & args) {
 }
 
+
+void ofApp::DrawWithPen(int thickness, ofColor color) {
+    ofLogNotice("ofApp::mouse") << ofGetMouseX() << ", " << ofGetMouseY() << std::endl;
+    ofSetColor(color);
+
+    ofDrawCircle(ofGetMouseX(), ofGetMouseY(), thickness);
+    ofDrawCircle(ofGetPreviousMouseX(), ofGetPreviousMouseY(), thickness);
+    ofDrawCircle((ofGetMouseX() + ofGetPreviousMouseX()) / 2, (ofGetMouseY() + ofGetPreviousMouseY()) / 2, thickness);
+
+
+    int cartesian_x_change = ofGetMouseX() - ofGetPreviousMouseX();
+    int cartesian_y_change = ofGetMouseY() - ofGetPreviousMouseY();
+
+    float screen_x_change = cartesian_x_change + (ofGetWindowWidth() / 2);
+    float screen_y_change = (ofGetWindowHeight() / 2) - cartesian_y_change;
+    float slope = screen_y_change / screen_x_change;
+
+    ofSetRectMode(OF_RECTMODE_CENTER);
+    ofLogNotice("ofApp::slope") << screen_x_change << " " << screen_y_change << " " << slope << std::endl;
+
+    for (int x = ofGetPreviousMouseX(); x < ofGetMouseX(); x += (thickness * kBrushInterpolationStepCoeff)) {
+        ofDrawCircle(x, slope * (x - ofGetPreviousMouseX()) + ofGetPreviousMouseY(), thickness * kBrushInterpolationSizeCoeff);
+    }
+}
+
 //--------------------------------------------------------------
 void ofApp::draw() {
+    if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT)) {
+        ofColor myOrange(255, 132, 0, 255);
+        DrawWithPen(10, myOrange);
+    }
 }
 
 //--------------------------------------------------------------

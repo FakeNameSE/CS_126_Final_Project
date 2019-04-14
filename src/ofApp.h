@@ -29,6 +29,8 @@ class ofApp : public ofBaseApp {
 
 	private:
 		const string kDinoDataFilepath = "dinosaur_data.json";
+		const int kBrushInterpolationSizeCoeff = 0.9;
+		const int kBrushInterpolationStepCoeff = 0.25;
 
 		// Flag for if the JSON data was properly loaded.
 		bool json_loaded_ = false;
@@ -50,4 +52,6 @@ class ofApp : public ofBaseApp {
 		bool LoadJson(string filepath);
 		string RetrieveNewDinoInfo(ofxJSONElement dino_info);
 		void DinoInfoButtonToggled(bool& new_val);
+
+		void DrawWithPen(int thickness, ofColor color);
 };
