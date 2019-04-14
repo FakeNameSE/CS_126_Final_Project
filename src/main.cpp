@@ -8,11 +8,13 @@ int main( ){
     settings.setSize(1200, 950);
 	settings.setPosition(ofVec2f(405,0));
 	settings.resizable = true;
+	settings.title = "DinoDoodle Canvas";
 	shared_ptr<ofAppBaseWindow> mainWindow = ofCreateWindow(settings);
 
     settings.setSize(400, 600);
 	settings.setPosition(ofVec2f(0,0));
 	settings.resizable = false;
+	settings.title = "DinoDoodle Controls";
 	// uncomment next line to share main's OpenGL resources with gui
 	//settings.shareContextWith = mainWindow;
 	shared_ptr<ofAppBaseWindow> guiWindow = ofCreateWindow(settings);
@@ -20,7 +22,10 @@ int main( ){
 
 	shared_ptr<ofApp> mainApp(new ofApp);
 	mainApp->setupGui();
+
 	ofAddListener(guiWindow->events().draw,mainApp.get(),&ofApp::drawGui);
+	// Listener for closing both windoes when one closes
+	ofAddListener(guiWindow->events().exit, mainApp.get(), &ofApp::exitGui);
 
 	ofRunApp(mainWindow, mainApp);
 	ofRunMainLoop();

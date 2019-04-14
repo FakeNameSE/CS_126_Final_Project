@@ -113,10 +113,25 @@ void ofApp::setupGui() {
 }
 
 /*
-Run when the UI window closes, needs to remove listeners.
+Need this to close both windows when one is closed.
+*/
+void ofApp::exitGui(ofEventArgs & args) {
+	exit();
+}
+
+/*
+Run when the UI window closes, needs to remove listeners and close window.
 */
 void ofApp::exit(){
 	dino_info_panel_->getVisible().removeListener(this, &ofApp::DinoInfoButtonToggled);
+
+    // Apparently, this is the one that closes when exit is called, so use flag
+    // to prevent exiting twice and crashing.
+    // Would not have figured this out without https://forum.openframeworks.cc/t/closing-multiple-windows-when-any-are-closed/27833
+    if (!exiting_) {
+		exiting_ = true;
+		ofExit();
+	}
 }
 
 //--------------------------------------------------------------
@@ -128,9 +143,6 @@ void ofApp::drawGui(ofEventArgs & args) {
 }
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 /*
 Helper method to draw with a pen like brush, takes a color and line thickness as
 arguments.
@@ -148,39 +160,14 @@ void ofApp::DrawWithPen(int thickness, ofColor color) {
     ofSetColor(color);
 
     // Draw one circle where the mouse is, one where we were, and one in between.
-=======
-=======
->>>>>>> 611a791774079239e37771d89051217a2e2e81f7
-=======
->>>>>>> 611a791774079239e37771d89051217a2e2e81f7
-void ofApp::DrawWithPen(int thickness, ofColor color) {
-    ofLogNotice("ofApp::mouse") << ofGetMouseX() << ", " << ofGetMouseY() << std::endl;
-    ofSetColor(color);
-
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 611a791774079239e37771d89051217a2e2e81f7
-=======
->>>>>>> 611a791774079239e37771d89051217a2e2e81f7
-=======
->>>>>>> 611a791774079239e37771d89051217a2e2e81f7
     ofDrawCircle(ofGetMouseX(), ofGetMouseY(), thickness);
     ofDrawCircle(ofGetPreviousMouseX(), ofGetPreviousMouseY(), thickness);
     ofDrawCircle((ofGetMouseX() + ofGetPreviousMouseX()) / 2, (ofGetMouseY() + ofGetPreviousMouseY()) / 2, thickness);
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     // Because the mouse can move faster than
     // Here we calculate the "slope" of the line between where we were and where
     // we ended up for line interpolation.
-=======
->>>>>>> 611a791774079239e37771d89051217a2e2e81f7
-=======
->>>>>>> 611a791774079239e37771d89051217a2e2e81f7
-=======
->>>>>>> 611a791774079239e37771d89051217a2e2e81f7
     int cartesian_x_change = ofGetMouseX() - ofGetPreviousMouseX();
     int cartesian_y_change = ofGetMouseY() - ofGetPreviousMouseY();
 
@@ -188,46 +175,17 @@ void ofApp::DrawWithPen(int thickness, ofColor color) {
     float screen_y_change = (ofGetWindowHeight() / 2) - cartesian_y_change;
     float slope = screen_y_change / screen_x_change;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     // TODO remove.
     //ofLogNotice("ofApp::slope") << screen_x_change << " " << screen_y_change << " " << slope << std::endl;
 
     for (int x = ofGetPreviousMouseX(); x < ofGetMouseX(); x += (thickness / kBrushInterpolationStepCoeff)) {
-=======
-=======
->>>>>>> 611a791774079239e37771d89051217a2e2e81f7
-=======
->>>>>>> 611a791774079239e37771d89051217a2e2e81f7
-    ofSetRectMode(OF_RECTMODE_CENTER);
-    ofLogNotice("ofApp::slope") << screen_x_change << " " << screen_y_change << " " << slope << std::endl;
-
-    for (int x = ofGetPreviousMouseX(); x < ofGetMouseX(); x += (thickness * kBrushInterpolationStepCoeff)) {
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 611a791774079239e37771d89051217a2e2e81f7
-=======
->>>>>>> 611a791774079239e37771d89051217a2e2e81f7
-=======
->>>>>>> 611a791774079239e37771d89051217a2e2e81f7
         ofDrawCircle(x, slope * (x - ofGetPreviousMouseX()) + ofGetPreviousMouseY(), thickness * kBrushInterpolationSizeCoeff);
     }
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 /*
 Run once a cycle for the canvas.
 */
-=======
-=======
->>>>>>> 611a791774079239e37771d89051217a2e2e81f7
-=======
->>>>>>> 611a791774079239e37771d89051217a2e2e81f7
-//--------------------------------------------------------------
->>>>>>> 611a791774079239e37771d89051217a2e2e81f7
 void ofApp::draw() {
     if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT)) {
         ofColor myOrange(255, 132, 0, 255);
