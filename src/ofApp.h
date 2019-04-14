@@ -31,7 +31,15 @@ class ofApp : public ofBaseApp {
 		const int kMaxCanvasFrameRate = 60;
 		const string kDinoDataFilepath = "dinosaur_data.json";
 		const int kBrushInterpolationSizeCoeff = 0.9;
+<<<<<<< HEAD
+<<<<<<< HEAD
 		const int kBrushInterpolationStepCoeff = 4;
+=======
+		const int kBrushInterpolationStepCoeff = 0.25;
+>>>>>>> 611a791774079239e37771d89051217a2e2e81f7
+=======
+		const int kBrushInterpolationStepCoeff = 0.25;
+>>>>>>> 611a791774079239e37771d89051217a2e2e81f7
 
 		// Flag for if the JSON data was properly loaded.
 		bool json_loaded_ = false;
