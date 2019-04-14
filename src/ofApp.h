@@ -9,9 +9,11 @@ using std::string;
 class ofApp : public ofBaseApp {
 	public:
 		void setup();
+		void setupGui();
 		void exit();
 		void update();
 		void draw();
+		void drawGui(ofEventArgs & args);
 
 		void keyPressed(int key);
 		void keyReleased(int key);

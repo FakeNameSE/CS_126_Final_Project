@@ -1,6 +1,7 @@
 #include "ofApp.h"
 #include <stdlib.h>
 #include <time.h>
+#include <cmath>
 
 //--------------------------------------------------------------
 bool ofApp::LoadJson(string filepath) {
@@ -36,6 +37,11 @@ void ofApp::DinoInfoButtonToggled(bool& new_val) {
 }
 
 void ofApp::setup() {
+    // Disable repainting the background.
+    ofSetBackgroundAuto(false);
+}
+
+void ofApp::setupGui() {
     // Initialize the random number generator seed.
     srand(time(NULL));
 
@@ -47,7 +53,7 @@ void ofApp::setup() {
     // Set their default locations to prevent overlapping.
     paint_palette_panel_->setPosition(20,20);
 	utilities_panel_->setPosition(20,50);
-    dino_info_panel_->setPosition(20, 110);
+    dino_info_panel_->setPosition(20, 120);
 
     // Add toggle for the dinosaur info panel visibility.
     // Just hook this up to the visibility attribute of the panel directly.
@@ -75,6 +81,10 @@ void ofApp::exit(){
 
 //--------------------------------------------------------------
 void ofApp::update() {
+}
+
+//--------------------------------------------------------------
+void ofApp::drawGui(ofEventArgs & args) {
 }
 
 //--------------------------------------------------------------
