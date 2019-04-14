@@ -33,7 +33,11 @@ class ofApp : public ofBaseApp {
 		const int kBrushInterpolationSizeCoeff = 0.9;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		const int kBrushInterpolationStepCoeff = 4;
+=======
+		const int kBrushInterpolationStepCoeff = 0.25;
+>>>>>>> 611a791774079239e37771d89051217a2e2e81f7
 =======
 		const int kBrushInterpolationStepCoeff = 0.25;
 >>>>>>> 611a791774079239e37771d89051217a2e2e81f7

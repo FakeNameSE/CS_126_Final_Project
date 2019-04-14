@@ -130,6 +130,7 @@ void ofApp::drawGui(ofEventArgs & args) {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*
 Helper method to draw with a pen like brush, takes a color and line thickness as
 arguments.
@@ -150,11 +151,16 @@ void ofApp::DrawWithPen(int thickness, ofColor color) {
 =======
 =======
 >>>>>>> 611a791774079239e37771d89051217a2e2e81f7
+=======
+>>>>>>> 611a791774079239e37771d89051217a2e2e81f7
 void ofApp::DrawWithPen(int thickness, ofColor color) {
     ofLogNotice("ofApp::mouse") << ofGetMouseX() << ", " << ofGetMouseY() << std::endl;
     ofSetColor(color);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 611a791774079239e37771d89051217a2e2e81f7
+=======
 >>>>>>> 611a791774079239e37771d89051217a2e2e81f7
 =======
 >>>>>>> 611a791774079239e37771d89051217a2e2e81f7
@@ -165,9 +171,12 @@ void ofApp::DrawWithPen(int thickness, ofColor color) {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     // Because the mouse can move faster than
     // Here we calculate the "slope" of the line between where we were and where
     // we ended up for line interpolation.
+=======
+>>>>>>> 611a791774079239e37771d89051217a2e2e81f7
 =======
 >>>>>>> 611a791774079239e37771d89051217a2e2e81f7
 =======
@@ -181,6 +190,7 @@ void ofApp::DrawWithPen(int thickness, ofColor color) {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     // TODO remove.
     //ofLogNotice("ofApp::slope") << screen_x_change << " " << screen_y_change << " " << slope << std::endl;
 
@@ -188,11 +198,16 @@ void ofApp::DrawWithPen(int thickness, ofColor color) {
 =======
 =======
 >>>>>>> 611a791774079239e37771d89051217a2e2e81f7
+=======
+>>>>>>> 611a791774079239e37771d89051217a2e2e81f7
     ofSetRectMode(OF_RECTMODE_CENTER);
     ofLogNotice("ofApp::slope") << screen_x_change << " " << screen_y_change << " " << slope << std::endl;
 
     for (int x = ofGetPreviousMouseX(); x < ofGetMouseX(); x += (thickness * kBrushInterpolationStepCoeff)) {
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 611a791774079239e37771d89051217a2e2e81f7
+=======
 >>>>>>> 611a791774079239e37771d89051217a2e2e81f7
 =======
 >>>>>>> 611a791774079239e37771d89051217a2e2e81f7
@@ -202,10 +217,13 @@ void ofApp::DrawWithPen(int thickness, ofColor color) {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*
 Run once a cycle for the canvas.
 */
 =======
+=======
+>>>>>>> 611a791774079239e37771d89051217a2e2e81f7
 =======
 >>>>>>> 611a791774079239e37771d89051217a2e2e81f7
 //--------------------------------------------------------------
