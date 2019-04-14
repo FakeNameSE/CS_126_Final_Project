@@ -28,9 +28,10 @@ class ofApp : public ofBaseApp {
 		void gotMessage(ofMessage msg);
 
 	private:
+		const int kMaxCanvasFrameRate = 60;
 		const string kDinoDataFilepath = "dinosaur_data.json";
 		const int kBrushInterpolationSizeCoeff = 0.9;
-		const int kBrushInterpolationStepCoeff = 0.25;
+		const int kBrushInterpolationStepCoeff = 4;
 
 		// Flag for if the JSON data was properly loaded.
 		bool json_loaded_ = false;
@@ -50,7 +51,8 @@ class ofApp : public ofBaseApp {
 		ofxJSONElement dino_info_json_;
 
 		bool LoadJson(string filepath);
-		string RetrieveNewDinoInfo(ofxJSONElement dino_info);
+		int PickRandomDinoIndex(ofxJSONElement dino_info);
+		string RetrieveNewDinoInfo(ofxJSONElement dino_info, int index);
 		void DinoInfoButtonToggled(bool& new_val);
 
 		void DrawWithPen(int thickness, ofColor color);
