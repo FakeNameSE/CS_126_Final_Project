@@ -5,9 +5,12 @@
 ## Things to add
 ### Core
 - [x] Finish exploratory work with the interface and JSON parsing.
-- [] Create a basic canvas to draw on.
+- [x] Create a basic canvas to draw on.
 - [] Implement saving the image.
 - [] Create an interface to change brush color.
+- [] Create an interface to save the image.
+- [] Integrate  popup file browser to select where to save the image.
+- [] Add interface to change stroke thickness.
 - [x] Add methods to parse and load the JSON data.
 - [x] Cleanly handle absent data in the JSON file if necessary.
 - [] Implement useful error handling for these methods.
@@ -19,10 +22,14 @@
 - [] Refactor the different UI components into groups if it would clean up the code.
 - [] Implement basic keyboard shortcuts.
 - [] Flesh out the JSON file with a useful amount of dinosaur facts.
+- [x] Split app into window for canvas and window for GUI.
+- [x] Make closing one window close both.
+- [x] Add titles to windows.
 ### Nice to haves, pick at least one
 - [] Add multiple brushes to toggle between.
-- [] Add the ability to change the brush stroke thickness.
+- [] Restructure drawing logic to enable switching brushes.
 - [] Add the ability to overlay the drawn image over a background.
+- [] Add the ability to load an image file to edit.
 - [] Display a sample image of the dinosaur along with its textual information.
 - [] Ability to save the panel layout configuration.
 ---
@@ -46,14 +53,15 @@
 - Specifically, rather then placing the dinosaur information in a panel, it will instead by placed in a label on the canvas with a toggle-able visibility. A possible avenue to adding images has also presented itself by saving ASCII text art into files with their paths referenced in the JSON file (since JSON does not support multi-line strings).
 - Success! The exploratory mission has reported that a label can be hidden and shown with information from a parsed JSON file.
 
-### April 12, 13th, and 14th
+### April 12 and 13th.
 - The expedition's JSON parsing code was refactored to be cleaner and support failures.
 - The initial success with displaying dinosaur information in a label was met with
 numerous setbacks. First, the expedition encountered excessive padding in the label,
-rendering it useless to display data. Numerous attempts to use API calls to configure this failed.
+rendering it useless to display data. Numerous attempts to use API calls to configure
+this failed.
 - However, just as Hannibal was forced to choose a road less charted to bring fiery
 vengeance upon the impudent Rome, so must we (albeit much less dramatically) traverse
-the treacherous Alps of a non-core GUI addon. The addon ofxGuiExtended has better
+the treacherous slopes of a non-core GUI addon. The addon ofxGuiExtended has better
 support for these labels, and so after a length hike, the project has been ported
 to use this incompatible library instead. Of particular note was the difficulty in
 setting up a toggle and listener to modify the visibility of the panel. After the
@@ -62,3 +70,31 @@ cryptic compilation messages shed light on the expected method signature of
 listener functions for boolean parameters (different from other listeners, they
 must take the new value as an argument), displaying dinosaur data with a toggle
 at last works.
+
+### April 14th.
+- A new day downs upon us, and with it the need to completely rethink the
+expedition's structure. A study of the tradeoffs of vector and bitmap graphics
+has concluded that bitmap is more suitable from the perspective of having
+differently styled lines, since while vector graphics takes care of drawing lines,
+the exact parameters used to style each line would need to be stored alongside its
+vertexes. Unfortunately, two steps forward, one step back. Bitmap art requires
+disabling repainting the background, which prevents GUI panels from being properly
+rendered in the same window. Some experimentation and an example led to a pivot
+towards having two windows, one for the GUI panels and another as a canvas to
+solve this problem.
+- The issue of closing the entire app when one window is closed, while its technical
+underpinnings remain relatively opaque (which exit function is called), was
+solved from a helpful forum post.
+- However, much like the cold and unforgiving mountain face that Hannibal defiantly
+stared down and traversed, bitmap line drawing has many of its own pitfalls. Using
+a single circle to trace the cursor gives a choppy appearance with a low thickness,
+while placing an additional circle at the previous location and one in between
+the current and previous is insufficient. The cursor can move faster than the
+draw cycle, leaving gaps in lines. Calculating the slope between the old and new
+positions and using linear interpolation to place additional circles has reduced,
+but not entirely solved this problem for which there does not seem to be a good
+solution for low thickness lines.
+- Alas, an old fiend has returned from beyond the grave with text in the labels.
+Changing the text in the labels can lead to it overflowing, an obstacle that was
+largely overcome by preloading at long label into the label's ofParameter (but
+not displaying it) at program launch.

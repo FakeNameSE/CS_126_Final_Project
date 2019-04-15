@@ -3,7 +3,6 @@
 #include <time.h>
 #include <cmath>
 
-//--------------------------------------------------------------
 /*
 Helper method to load the JSON file.
 
@@ -171,13 +170,17 @@ void ofApp::DrawWithPen(int thickness, ofColor color) {
     int cartesian_x_change = ofGetMouseX() - ofGetPreviousMouseX();
     int cartesian_y_change = ofGetMouseY() - ofGetPreviousMouseY();
 
+    // We need to shift our coordinate system to line up with 0 being top left
+    // and everything being positive.
     float screen_x_change = cartesian_x_change + (ofGetWindowWidth() / 2);
     float screen_y_change = (ofGetWindowHeight() / 2) - cartesian_y_change;
+
     float slope = screen_y_change / screen_x_change;
 
     // TODO remove.
     //ofLogNotice("ofApp::slope") << screen_x_change << " " << screen_y_change << " " << slope << std::endl;
 
+    // Now we plot circles along this line to try to fill in some blank areas.
     for (int x = ofGetPreviousMouseX(); x < ofGetMouseX(); x += (thickness / kBrushInterpolationStepCoeff)) {
         ofDrawCircle(x, slope * (x - ofGetPreviousMouseX()) + ofGetPreviousMouseY(), thickness * kBrushInterpolationSizeCoeff);
     }
@@ -189,7 +192,7 @@ Run once a cycle for the canvas.
 void ofApp::draw() {
     if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT)) {
         ofColor myOrange(255, 132, 0, 255);
-        DrawWithPen(10, myOrange);
+        DrawWithPen(40, myOrange);
     }
 }
 

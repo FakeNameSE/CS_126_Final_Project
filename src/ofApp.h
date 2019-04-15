@@ -8,6 +8,7 @@ using std::string;
 
 class ofApp : public ofBaseApp {
 	public:
+		//===================== OpenFrameworks methods. =======================
 		void setup();
 		void setupGui();
 		void exitGui(ofEventArgs & args);
@@ -29,17 +30,26 @@ class ofApp : public ofBaseApp {
 		void gotMessage(ofMessage msg);
 
 	private:
+		//============================= Constants. =============================
 		const int kMaxCanvasFrameRate = 60;
 		const string kDinoDataFilepath = "dinosaur_data.json";
+		// Determines the percentage of the radius that the interpolation circle's
+		// radius is, the bigger it is the smaller the hole, but the uglier.
 		const int kBrushInterpolationSizeCoeff = 0.9;
+		// We divide the radius by this to determine the stepping size for the
+		// interval over which we draw interpolations.
 		const int kBrushInterpolationStepCoeff = 4;
 
+
+		//============================== Flags. ================================
 		// Flag for if the JSON data was properly loaded.
 		bool json_loaded_ = false;
 		// Flag to prevent Exit() from being called twice on close which would
 		// cause a crash.
 		bool exiting_ = false;
 
+
+		//========================== GUI components ============================
 		// The base GUI and panels.
 		ofxGui gui_;
 		ofxGuiPanel* paint_palette_panel_;
@@ -49,15 +59,21 @@ class ofApp : public ofBaseApp {
 		// Groups for UI elements.
 		ofxGuiGroup* labels;
 
+		//============================ Parameters. =============================
 		// ofParameters, used to store values that can be set through the UI.
 		ofParameter<string> dino_text_;
 
+
 		ofxJSONElement dino_info_json_;
 
+
+		//========================== Helper methods. ===========================
 		bool LoadJson(string filepath);
 		int PickRandomDinoIndex(ofxJSONElement dino_info);
 		string RetrieveNewDinoInfo(ofxJSONElement dino_info, int index);
 		void DinoInfoButtonToggled(bool& new_val);
 
+
+		//============================= Brushes. ===============================
 		void DrawWithPen(int thickness, ofColor color);
 };
