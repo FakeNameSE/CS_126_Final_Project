@@ -6,15 +6,15 @@
 ### Core
 - [x] Finish exploratory work with the interface and JSON parsing.
 - [x] Create a basic canvas to draw on.
-- [] Implement saving the image.
+- [x] Create a basic drawing pen.
+- [x] Mitigate issues with gaps left in trail of pen with linear interpolation.
 - [] Create an interface to change brush color.
-- [] Create an interface to save the image.
-- [] Integrate  popup file browser to select where to save the image.
 - [] Add interface to change stroke thickness.
 - [x] Add methods to parse and load the JSON data.
 - [x] Cleanly handle absent data in the JSON file if necessary.
 - [] Implement useful error handling for these methods.
 - [x] Create a dinosaur information label.
+- [x] Reduce text overflow issues in label.
 - [x] Add a method to convert the JSON data into a beautified string to display in the label.
 - [x] Add a button to toggle the visibility of a dinosaur information label.
 - [x] Implement a method to randomly select a dinosaur to display information on.
@@ -25,6 +25,9 @@
 - [x] Split app into window for canvas and window for GUI.
 - [x] Make closing one window close both.
 - [x] Add titles to windows.
+- [] Create an interface to save the image.
+- [] Integrate  popup file browser to select where to save the image.
+- [] Implement saving the image.
 ### Nice to haves, pick at least one
 - [] Add multiple brushes to toggle between.
 - [] Restructure drawing logic to enable switching brushes.
