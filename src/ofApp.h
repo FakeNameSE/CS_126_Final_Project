@@ -57,15 +57,17 @@ class ofApp : public ofBaseApp {
 		ofxGuiPanel* dino_info_panel_;
 
 		// Groups for UI elements.
-		ofxGuiGroup* labels;
+		ofxGuiGroup* labels_;
+		ofxGuiGroup* brush_settings_;
+		ofxGuiGroup* brushes_;
 
 		//============================ Parameters. =============================
 		// ofParameters, used to store values that can be set through the UI.
 		ofParameter<string> dino_text_;
-
+		ofParameter<int> brush_thickness_;
+		ofParameter<ofColor> brush_color_;
 
 		ofxJSONElement dino_info_json_;
-
 
 		//========================== Helper methods. ===========================
 		bool LoadJson(string filepath);

@@ -10,7 +10,8 @@ Returns false if there is an error loading it.
 */
 bool ofApp::LoadJson(string filepath) {
     bool parsingSuccessful = dino_info_json_.open(filepath);
-    ofLogNotice("ofApp::setup") << dino_info_json_.getRawString();
+    //TODO Remove.
+    //ofLogNotice("ofApp::setup") << dino_info_json_.getRawString();
 
     return parsingSuccessful;
 }
@@ -34,7 +35,7 @@ string ofApp::RetrieveNewDinoInfo(ofxJSONElement dino_info, int index) {
 
     // Put the information together nicely.
     dino_info_string = "Common name: " + dino_info["dinosaurs"][index]["common_name"].asString()
-    + "\n" + "Scientific name: " + dino_info["dinosaurs"][index]["scientific_name"].asString()
+    + "\n" + "Scientific name: " + dino_info["dinosaurs"][index]["scientifc_name"].asString()
     + "\n" + "Fact: " + dino_info["dinosaurs"][index]["fact"].asString();
 
     return dino_info_string;
@@ -67,7 +68,7 @@ Run for the canvas window at the beginning.
 void ofApp::setup() {
     // Disable repainting the background.
     ofSetBackgroundAuto(false);
-    ofSetFrameRate(kMaxCanvasFrameRate);
+    //ofSetFrameRate(kMaxCanvasFrameRate);
 }
 
 /*
@@ -84,9 +85,19 @@ void ofApp::setupGui() {
     dino_info_panel_ = gui_.addPanel("Dinosaur Facts");
 
     // Set their default locations to prevent overlapping.
-    paint_palette_panel_->setPosition(20,20);
-	utilities_panel_->setPosition(20,50);
-    dino_info_panel_->setPosition(20, 120);
+    dino_info_panel_->setPosition(20, 10);
+    utilities_panel_->setPosition(20, 150);
+    paint_palette_panel_->setPosition(20, 220);
+
+    // Build the paint palette panel.
+    // Add a group for brush settings.
+    brush_settings_ = paint_palette_panel_->addGroup("Brush Settings:");
+    // Setup and add a control for brush thickness.
+    brush_thickness_.set("Brush Thickness",10,10,100); // Use the first parameter to set the initial lower value and the min and max value
+    brush_settings_->add(brush_thickness_);
+    // Setup and add a control for brush color.
+    brush_color_.set("Color",ofColor(0,0,0,255), ofColor(0,0,0,0), ofColor(255,255,255,255));
+    brush_settings_->add(brush_color_);
 
     // Add toggle for the dinosaur info panel visibility.
     // Just hook this up to the visibility attribute of the panel directly.
@@ -95,8 +106,8 @@ void ofApp::setupGui() {
     dino_info_panel_->getVisible().set(false);
 
     // Setup labels for dinosaur facts, add them to the dino_info_panel_.
-    labels = dino_info_panel_->addGroup("The basics:");
-    labels->add(dino_text_);
+    labels_ = dino_info_panel_->addGroup("The basics:");
+    labels_->add(dino_text_);
 
     // Flip the flag depending on whether loading the json was successful.
     json_loaded_ = LoadJson(kDinoDataFilepath);
@@ -192,7 +203,7 @@ Run once a cycle for the canvas.
 void ofApp::draw() {
     if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT)) {
         ofColor myOrange(255, 132, 0, 255);
-        DrawWithPen(40, myOrange);
+        DrawWithPen(20, myOrange);
     }
 }
 

@@ -8,8 +8,8 @@
 - [x] Create a basic canvas to draw on.
 - [x] Create a basic drawing pen.
 - [x] Mitigate issues with gaps left in trail of pen with linear interpolation.
-- [] Create an interface to change brush color.
-- [] Add interface to change stroke thickness.
+- [x] Create an interface to change brush color.
+- [x] Add interface to change stroke thickness.
 - [x] Add methods to parse and load the JSON data.
 - [x] Cleanly handle absent data in the JSON file if necessary.
 - [] Implement useful error handling for these methods.
@@ -18,6 +18,8 @@
 - [x] Add a method to convert the JSON data into a beautified string to display in the label.
 - [x] Add a button to toggle the visibility of a dinosaur information label.
 - [x] Implement a method to randomly select a dinosaur to display information on.
+- [] Modify MakeFile to be able to run Catch2 tests.
+- [] Add tests for JSON parsing.
 - [] Work on theming to make the interface look better.
 - [] Refactor the different UI components into groups if it would clean up the code.
 - [] Implement basic keyboard shortcuts.
@@ -30,6 +32,7 @@
 - [] Implement saving the image.
 ### Nice to haves, pick at least one
 - [] Add multiple brushes to toggle between.
+- [] Add an eraser.
 - [] Restructure drawing logic to enable switching brushes.
 - [] Add the ability to overlay the drawn image over a background.
 - [] Add the ability to load an image file to edit.
