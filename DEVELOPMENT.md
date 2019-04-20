@@ -10,6 +10,7 @@
 - [x] Mitigate issues with gaps left in trail of pen with linear interpolation.
 - [x] Create an interface to change brush color.
 - [x] Add interface to change stroke thickness.
+- [x] Connect stroke thickness and color to actual brush strokes.
 - [x] Add methods to parse and load the JSON data.
 - [] Cleanly handle absent data in the JSON file if necessary.
 - [] Implement useful error handling for these methods.
@@ -30,8 +31,11 @@
 - [] Create an interface to save the image.
 - [] Integrate  popup file browser to select where to save the image.
 - [] Implement saving the image.
+- [] Debug limiting frame rate flickering issues.
 ### Nice to haves, pick at least one
 - [] Add multiple brushes to toggle between.
+- [] Replace background with ofFBO to reduce flickering and possibly allow image
+loading.
 - [] Add an eraser.
 - [] Restructure drawing logic to enable switching brushes.
 - [] Add the ability to overlay the drawn image over a background.
