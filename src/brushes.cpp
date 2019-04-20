@@ -10,7 +10,7 @@ circles with a bunch of gaps between them, which is mainly due to the mouse
 moving faster than the draw cycle (does not seem to be fixable).
 To accomplish this we use line interpolation and paint a circle where we were before.
 */
-void DrawWithPen(int thickness, int color) {
+void DrawWithPen(int thickness, ofColor color) {
     // TODO remove
     //ofLogNotice("ofApp::mouse") << ofGetMouseX() << ", " << ofGetMouseY() << std::endl;
 
@@ -23,7 +23,8 @@ void DrawWithPen(int thickness, int color) {
     ofDrawCircle((ofGetMouseX() + ofGetPreviousMouseX()) / 2, (ofGetMouseY() + ofGetPreviousMouseY()) / 2, thickness);
 
 
-    // Because the mouse can move faster than
+    // Because the mouse can move faster than the draw cycle updates, we need this
+    // fun stuff in a vain attempt to fill in gaps in brush strokes.
     // Here we calculate the "slope" of the line between where we were and where
     // we ended up for line interpolation.
     int cartesian_x_change = ofGetMouseX() - ofGetPreviousMouseX();
@@ -55,6 +56,7 @@ Adapted to work with differing sizes and an arbitrary color from the Glowing lin
 brush in the OF Book.
 */
 void DrawWithBubbleBrush(int thickness, ofColor color) {
+    //TODO Move these to header?
     // Determines how wide brush is.
     int max_radius = thickness;
     // The lower this value, the more circles we get.

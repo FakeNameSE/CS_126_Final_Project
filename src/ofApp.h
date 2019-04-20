@@ -36,6 +36,8 @@ class ofApp : public ofBaseApp {
 		const string kDinoDataFilepath = "dinosaur_data.json";
 
 		const ofColor kWhite = ofColor(255, 255, 255, 255);
+		const ofColor kBlack = ofColor(0, 0, 0, 255);
+		const ofColor kBackgroundColor = kWhite;
 
 
 		//============================== Flags. ================================

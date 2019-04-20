@@ -73,7 +73,7 @@ void ofApp::setup() {
     // Disable repainting the background.
     ofSetBackgroundAuto(false);
     // Set background to white.
-    ofBackground(kWhite);
+    ofBackground(kBackgroundColor);
     //ofSetFrameRate(kMaxCanvasFrameRate);
 }
 
@@ -179,7 +179,11 @@ Run once a cycle for the canvas.
 */
 void ofApp::draw() {
     if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT)) {
-        DrawWithBubbleBrush(brush_thickness_, brush_color_);
+        if (active_brush_ == Brushes::PEN) {
+            DrawWithPen(brush_thickness_, brush_color_);
+        } else if (active_brush_ == Brushes::BUBBLE_BRUSH) {
+            DrawWithBubbleBrush(brush_thickness_, brush_color_);
+        }
     }
 }
 
