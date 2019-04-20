@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "brushes.h"
 #include "ofxGuiExtended.h"
 #include "ofxJSONElement.h"
 
@@ -33,12 +34,8 @@ class ofApp : public ofBaseApp {
 		//============================= Constants. =============================
 		const int kMaxCanvasFrameRate = 60;
 		const string kDinoDataFilepath = "dinosaur_data.json";
-		// Determines the percentage of the radius that the interpolation circle's
-		// radius is, the bigger it is the smaller the hole, but the uglier.
-		const int kBrushInterpolationSizeCoeff = 0.9;
-		// We divide the radius by this to determine the stepping size for the
-		// interval over which we draw interpolations.
-		const int kBrushInterpolationStepCoeff = 4;
+
+		const ofColor kWhite = ofColor(255, 255, 255, 255);
 
 
 		//============================== Flags. ================================
@@ -48,6 +45,8 @@ class ofApp : public ofBaseApp {
 		// cause a crash.
 		bool exiting_ = false;
 
+		//====================== Other non-GUI fields. =========================
+		Brushes active_brush_;
 
 		//========================== GUI components ============================
 		// The base GUI and panels.
@@ -59,7 +58,7 @@ class ofApp : public ofBaseApp {
 		// Groups for UI elements.
 		ofxGuiGroup* labels_;
 		ofxGuiGroup* brush_settings_;
-		ofxGuiGroup* brushes_;
+		ofxGuiGroup* brush_toggles_;
 
 		//============================ Parameters. =============================
 		// ofParameters, used to store values that can be set through the UI.
@@ -67,15 +66,18 @@ class ofApp : public ofBaseApp {
 		ofParameter<int> brush_thickness_;
 		ofParameter<ofColor> brush_color_;
 
+		ofParameterGroup brush_toggle_parameters_;
+		ofParameter<bool> pen;
+		ofParameter<bool> bubble_brush;
+
 		ofxJSONElement dino_info_json_;
 
 		//========================== Helper methods. ===========================
 		bool LoadJson(string filepath);
 		int PickRandomDinoIndex(ofxJSONElement dino_info);
 		string RetrieveNewDinoInfo(ofxJSONElement dino_info, int index);
+
+		//============================ Listeners. ==============================
 		void DinoInfoButtonToggled(bool& new_val);
-
-
-		//============================= Brushes. ===============================
-		void DrawWithPen(int thickness, ofColor color);
+		void BrushToggled(int& index);
 };

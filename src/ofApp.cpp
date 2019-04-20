@@ -62,12 +62,18 @@ void ofApp::DinoInfoButtonToggled(bool& new_val) {
     }
 }
 
+void ofApp::BrushToggled(int& index) {
+    active_brush_ = (Brushes) index;
+}
+
 /*
 Run for the canvas window at the beginning.
 */
 void ofApp::setup() {
     // Disable repainting the background.
     ofSetBackgroundAuto(false);
+    // Set background to white.
+    ofBackground(kWhite);
     //ofSetFrameRate(kMaxCanvasFrameRate);
 }
 
@@ -90,6 +96,14 @@ void ofApp::setupGui() {
     paint_palette_panel_->setPosition(20, 220);
 
     // Build the paint palette panel.
+    // Setup and add a parameter group to toggle the brush type.
+    brush_toggle_parameters_.setName("Brushes");
+	brush_toggle_parameters_.add(pen.set("Pen",true));
+	brush_toggle_parameters_.add(bubble_brush.set("Bubble Brush",false));
+
+	brush_toggles_ = paint_palette_panel_->addGroup(brush_toggle_parameters_);
+	brush_toggles_->setExclusiveToggles(true);
+
     // Add a group for brush settings.
     brush_settings_ = paint_palette_panel_->addGroup("Brush Settings:");
     // Setup and add a control for brush thickness.
@@ -98,6 +112,7 @@ void ofApp::setupGui() {
     // Setup and add a control for brush color.
     brush_color_.set("Color",ofColor(0,0,0,255), ofColor(0,0,0,0), ofColor(255,255,255,255));
     brush_settings_->add(brush_color_);
+
 
     // Add toggle for the dinosaur info panel visibility.
     // Just hook this up to the visibility attribute of the panel directly.
@@ -117,6 +132,12 @@ void ofApp::setupGui() {
     dino_text_.set(RetrieveNewDinoInfo(dino_info_json_, 0));
 
     // Set listeners.
+    // Change the brush.
+    brush_toggles_->getActiveToggleIndex().addListener(this, &ofApp::BrushToggled);
+	brush_toggles_->setActiveToggle(0);
+    active_brush_ = (Brushes) 0;
+
+    // To update the dinosaur info for the label.
     // Put at end, since otherwise the premature reference to the json object
     // results in a floating point runtime error.
     dino_info_panel_->getVisible().addListener(this, &ofApp::DinoInfoButtonToggled);
@@ -154,55 +175,11 @@ void ofApp::drawGui(ofEventArgs & args) {
 
 
 /*
-Helper method to draw with a pen like brush, takes a color and line thickness as
-arguments.
-
-Most of the fancy stuff in here is to reduce the choppy appearance of having
-circles with a bunch of gaps between them, which is mainly due to the mouse
-moving faster than the draw cycle (does not seem to be fixable).
-To accomplish this we use line interpolation and paint a circle where we were before.
-*/
-void ofApp::DrawWithPen(int thickness, ofColor color) {
-    // TODO remove
-    //ofLogNotice("ofApp::mouse") << ofGetMouseX() << ", " << ofGetMouseY() << std::endl;
-
-    // Set the color of the brush.
-    ofSetColor(color);
-
-    // Draw one circle where the mouse is, one where we were, and one in between.
-    ofDrawCircle(ofGetMouseX(), ofGetMouseY(), thickness);
-    ofDrawCircle(ofGetPreviousMouseX(), ofGetPreviousMouseY(), thickness);
-    ofDrawCircle((ofGetMouseX() + ofGetPreviousMouseX()) / 2, (ofGetMouseY() + ofGetPreviousMouseY()) / 2, thickness);
-
-
-    // Because the mouse can move faster than
-    // Here we calculate the "slope" of the line between where we were and where
-    // we ended up for line interpolation.
-    int cartesian_x_change = ofGetMouseX() - ofGetPreviousMouseX();
-    int cartesian_y_change = ofGetMouseY() - ofGetPreviousMouseY();
-
-    // We need to shift our coordinate system to line up with 0 being top left
-    // and everything being positive.
-    float screen_x_change = cartesian_x_change + (ofGetWindowWidth() / 2);
-    float screen_y_change = (ofGetWindowHeight() / 2) - cartesian_y_change;
-
-    float slope = screen_y_change / screen_x_change;
-
-    // TODO remove.
-    //ofLogNotice("ofApp::slope") << screen_x_change << " " << screen_y_change << " " << slope << std::endl;
-
-    // Now we plot circles along this line to try to fill in some blank areas.
-    for (int x = ofGetPreviousMouseX(); x < ofGetMouseX(); x += (thickness / kBrushInterpolationStepCoeff)) {
-        ofDrawCircle(x, slope * (x - ofGetPreviousMouseX()) + ofGetPreviousMouseY(), thickness * kBrushInterpolationSizeCoeff);
-    }
-}
-
-/*
 Run once a cycle for the canvas.
 */
 void ofApp::draw() {
     if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT)) {
-        DrawWithPen(brush_thickness_, brush_color_);
+        DrawWithBubbleBrush(brush_thickness_, brush_color_);
     }
 }
 
