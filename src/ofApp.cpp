@@ -202,8 +202,7 @@ Run once a cycle for the canvas.
 */
 void ofApp::draw() {
     if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT)) {
-        ofColor myOrange(255, 132, 0, 255);
-        DrawWithPen(20, myOrange);
+        DrawWithPen(brush_thickness_, brush_color_);
     }
 }
 

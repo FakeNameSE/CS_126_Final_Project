@@ -11,7 +11,7 @@
 - [x] Create an interface to change brush color.
 - [x] Add interface to change stroke thickness.
 - [x] Add methods to parse and load the JSON data.
-- [x] Cleanly handle absent data in the JSON file if necessary.
+- [] Cleanly handle absent data in the JSON file if necessary.
 - [] Implement useful error handling for these methods.
 - [x] Create a dinosaur information label.
 - [x] Reduce text overflow issues in label.
@@ -104,3 +104,11 @@ solution for low thickness lines.
 Changing the text in the labels can lead to it overflowing, an obstacle that was
 largely overcome by preloading at long label into the label's ofParameter (but
 not displaying it) at program launch.
+
+### April 19th, 20th, and 21st
+- Rapid progress has been made in making the brush parameters user modifiable.
+The pen brush already took the radius and color as arguments, so it was a matter
+of creating ofParamters for these values and hooking them up to UI elements
+(trial and error and copying short snippets from examples). Conveniently, OF has
+an object that wraps around ints to store a color and the UI handles this very
+nicely automatically.
