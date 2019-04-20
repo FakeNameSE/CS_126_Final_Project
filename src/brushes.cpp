@@ -84,3 +84,12 @@ void DrawWithBubbleBrush(int thickness, ofColor color) {
         ofDrawCircle(ofGetMouseX()+xOffset, ofGetMouseY()+yOffset, radius);
     }
 }
+
+void Eraser(int thickness, ofColor color) {
+    // Set the color of the brush (here to the background color).
+    ofSetColor(color);
+
+    // Draw one circle where the mouse is, might be choppy but gives much more
+    // fine-grained control.
+    ofDrawCircle(ofGetMouseX(), ofGetMouseY(), thickness);
+}

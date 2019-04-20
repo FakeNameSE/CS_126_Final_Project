@@ -71,6 +71,7 @@ class ofApp : public ofBaseApp {
 		ofParameterGroup brush_toggle_parameters_;
 		ofParameter<bool> pen;
 		ofParameter<bool> bubble_brush;
+		ofParameter<bool> eraser;
 
 		ofxJSONElement dino_info_json_;
 

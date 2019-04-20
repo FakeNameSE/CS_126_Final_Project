@@ -63,6 +63,7 @@ void ofApp::DinoInfoButtonToggled(bool& new_val) {
 }
 
 void ofApp::BrushToggled(int& index) {
+    // Convert the index number to the appropriate enum class type.
     active_brush_ = (Brushes) index;
 }
 
@@ -98,8 +99,9 @@ void ofApp::setupGui() {
     // Build the paint palette panel.
     // Setup and add a parameter group to toggle the brush type.
     brush_toggle_parameters_.setName("Brushes");
-	brush_toggle_parameters_.add(pen.set("Pen",true));
-	brush_toggle_parameters_.add(bubble_brush.set("Bubble Brush",false));
+	brush_toggle_parameters_.add(pen.set("Pen", true));
+	brush_toggle_parameters_.add(bubble_brush.set("Bubble Brush", false));
+    brush_toggle_parameters_.add(eraser.set("Eraser" ,false));
 
 	brush_toggles_ = paint_palette_panel_->addGroup(brush_toggle_parameters_);
 	brush_toggles_->setExclusiveToggles(true);
@@ -183,6 +185,8 @@ void ofApp::draw() {
             DrawWithPen(brush_thickness_, brush_color_);
         } else if (active_brush_ == Brushes::BUBBLE_BRUSH) {
             DrawWithBubbleBrush(brush_thickness_, brush_color_);
+        } else if (active_brush_ == Brushes::ERASER) {
+            Eraser(brush_thickness_, kBackgroundColor);
         }
     }
 }

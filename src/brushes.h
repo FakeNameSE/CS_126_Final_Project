@@ -12,9 +12,11 @@ const int kBrushInterpolationStepCoeff = 4;
 
 enum class Brushes {
   PEN,
-  BUBBLE_BRUSH
+  BUBBLE_BRUSH,
+  ERASER
 };
 
 //============================= Brushes. ===============================
 void DrawWithPen(int thickness, ofColor color);
 void DrawWithBubbleBrush(int thickness, ofColor color);
+void Eraser(int thickness, ofColor color);
