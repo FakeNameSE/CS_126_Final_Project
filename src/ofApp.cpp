@@ -71,11 +71,16 @@ void ofApp::BrushToggled(int& index) {
 Run for the canvas window at the beginning.
 */
 void ofApp::setup() {
-    // Disable repainting the background.
-    ofSetBackgroundAuto(false);
     // Set background to white.
     ofBackground(kBackgroundColor);
     //ofSetFrameRate(kMaxCanvasFrameRate);
+
+    // Allocate memory for the FBO (framebuffer that we render).
+    fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
+    // Set the FBO background color.
+    fbo.begin();
+       ofClear(kBackgroundColor);
+   fbo.end();
 }
 
 /*
@@ -180,15 +185,30 @@ void ofApp::drawGui(ofEventArgs & args) {
 Run once a cycle for the canvas.
 */
 void ofApp::draw() {
-    if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT)) {
-        if (active_brush_ == Brushes::PEN) {
-            DrawWithPen(brush_thickness_, brush_color_);
-        } else if (active_brush_ == Brushes::BUBBLE_BRUSH) {
-            DrawWithBubbleBrush(brush_thickness_, brush_color_);
-        } else if (active_brush_ == Brushes::ERASER) {
-            Eraser(brush_thickness_, kBackgroundColor);
+    // Render everything after this onto the Fbo renderer instead of the screen.
+    // This prevents flickering issues.
+    fbo.begin();
+        // We layer these drawings ontop with push and then pop them off after.
+        ofPushStyle();
+
+        // Select and call the appropriate brush drawing method if the mouse is
+        // pressed.
+        if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT)) {
+            if (active_brush_ == Brushes::PEN) {
+                DrawWithPen(brush_thickness_, brush_color_);
+            } else if (active_brush_ == Brushes::BUBBLE_BRUSH) {
+                DrawWithBubbleBrush(brush_thickness_, brush_color_);
+            } else if (active_brush_ == Brushes::ERASER) {
+                Eraser(brush_thickness_, kBackgroundColor);
+            }
         }
-    }
+
+        ofPopStyle();
+    fbo.end();
+
+    // Now that we drew everything into this fbo renderer, draw that to the
+    // screen.
+    fbo.draw(0,0);
 }
 
 //--------------------------------------------------------------

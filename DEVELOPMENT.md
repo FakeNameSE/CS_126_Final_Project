@@ -31,12 +31,11 @@
 - [] Create an interface to save the image.
 - [] Integrate  popup file browser to select where to save the image.
 - [] Implement saving the image.
-- [] Debug limiting frame rate flickering issues.
+- [x] Debug limiting frame rate flickering issues.
 - [] Add button to clear screen.
 ### Nice to haves, pick at least one
 - [x] Add multiple brushes to toggle between.
-- [] Replace background with ofFBO to reduce flickering and possibly allow image
-loading.
+- [x] Replace background with ofFBO to reduce flickering and possibly allow image loading.
 - [x] Add an eraser.
 - [x] Restructure drawing logic to enable switching brushes.
 - [] Add the ability to overlay the drawn image over a background.
@@ -118,3 +117,19 @@ of creating ofParamters for these values and hooking them up to UI elements
 (trial and error and copying short snippets from examples). Conveniently, OF has
 an object that wraps around ints to store a color and the UI handles this very
 nicely automatically.
+- The restructuring of logic to permit switching brushes was also surprisingly
+easy. An enum class of the different brushes is used to provide the type of the
+current active brush (set by converting the index of the active toggle to an
+enum in the listener function to the toggle), and then a simple set of
+conditionals when the left mouse button is pressed during the draw cycle
+determines which brush drawing method to call.
+- The expedition is moving forward again with the addition of an eraser which in
+reality is a simple implementation of the pen that uses the background color.
+- However, like the deadly switchbacks and turns of the Alps that the mighty
+Carthaginian army once traversed, sometimes to make forward progress one must
+first head back. Flickering issues, particularly from the transparency used by
+the bubble brush (and just intermittently when starting) necessitated the manual
+use of the oFBO renderer rather than just drawing directly to the screen. After
+some light footwork on the precipitous cliffs and quite a bit of guesswork,
+modifying the drawing to use the oFBO was successful. Fortunately, this may also
+clear the path in the future for loading images to edit.

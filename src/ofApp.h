@@ -30,7 +30,9 @@ class ofApp : public ofBaseApp {
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-	private:
+		// Framebuffer render that we draw to.
+		ofFbo fbo;
+
 		//============================= Constants. =============================
 		const int kMaxCanvasFrameRate = 60;
 		const string kDinoDataFilepath = "dinosaur_data.json";
