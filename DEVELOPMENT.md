@@ -22,7 +22,7 @@
 - [] Modify MakeFile to be able to run Catch2 tests.
 - [] Add tests for JSON parsing.
 - [] Work on theming to make the interface look better.
-- [] Refactor the different UI components into groups if it would clean up the code.
+- [x] Refactor the different UI components into groups if it would clean up the code.
 - [] Implement basic keyboard shortcuts.
 - [] Flesh out the JSON file with a useful amount of dinosaur facts.
 - [x] Split app into window for canvas and window for GUI.
@@ -32,16 +32,18 @@
 - [] Integrate  popup file browser to select where to save the image.
 - [] Implement saving the image.
 - [] Debug limiting frame rate flickering issues.
+- [] Add button to clear screen.
 ### Nice to haves, pick at least one
-- [] Add multiple brushes to toggle between.
+- [x] Add multiple brushes to toggle between.
 - [] Replace background with ofFBO to reduce flickering and possibly allow image
 loading.
-- [] Add an eraser.
-- [] Restructure drawing logic to enable switching brushes.
+- [x] Add an eraser.
+- [x] Restructure drawing logic to enable switching brushes.
 - [] Add the ability to overlay the drawn image over a background.
 - [] Add the ability to load an image file to edit.
 - [] Display a sample image of the dinosaur along with its textual information.
 - [] Ability to save the panel layout configuration.
+- [] Replace cursor with circle of appropriate size and color, might not be possible since background repainting is disabled.
 ---
 
 ## A Journey into the Abyss, Volume II
