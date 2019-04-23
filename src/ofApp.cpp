@@ -121,6 +121,9 @@ void ofApp::setupGui() {
     brush_settings_->add(brush_color_);
 
 
+    // Setup the utilities panel.
+    // Save button.
+    utilities_panel_->add(save_image.set("Save Image"));
     // Add toggle for the dinosaur info panel visibility.
     // Just hook this up to the visibility attribute of the panel directly.
     utilities_panel_->add(dino_info_panel_->getVisible().set("Show dinosaur facts", false));
@@ -139,6 +142,8 @@ void ofApp::setupGui() {
     dino_text_.set(RetrieveNewDinoInfo(dino_info_json_, 0));
 
     // Set listeners.
+    // Save an image.
+    save_image.addListener(this, &ofApp::SaveImageWrapper);
     // Change the brush.
     brush_toggles_->getActiveToggleIndex().addListener(this, &ofApp::BrushToggled);
 	brush_toggles_->setActiveToggle(0);
@@ -162,6 +167,7 @@ Run when the UI window closes, needs to remove listeners and close window.
 */
 void ofApp::exit(){
 	dino_info_panel_->getVisible().removeListener(this, &ofApp::DinoInfoButtonToggled);
+    brush_toggles_->getActiveToggleIndex().removeListener(this, &ofApp::BrushToggled);
 
     // Apparently, this is the one that closes when exit is called, so use flag
     // to prevent exiting twice and crashing.
@@ -187,13 +193,14 @@ Run once a cycle for the canvas.
 void ofApp::draw() {
     // Render everything after this onto the Fbo renderer instead of the screen.
     // This prevents flickering issues.
-    fbo.begin();
+    //fbo.begin();
         // We layer these drawings ontop with push and then pop them off after.
-        ofPushStyle();
+        //ofPushStyle();
 
         // Select and call the appropriate brush drawing method if the mouse is
         // pressed.
         if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT)) {
+            fbo.begin();
             if (active_brush_ == Brushes::PEN) {
                 DrawWithPen(brush_thickness_, brush_color_);
             } else if (active_brush_ == Brushes::BUBBLE_BRUSH) {
@@ -201,19 +208,48 @@ void ofApp::draw() {
             } else if (active_brush_ == Brushes::ERASER) {
                 Eraser(brush_thickness_, kBackgroundColor);
             }
+            fbo.end();
         }
+        fbo.draw(0,0);
 
-        ofPopStyle();
-    fbo.end();
+        //ofPopStyle();
+    //fbo.end();
 
     // Now that we drew everything into this fbo renderer, draw that to the
     // screen.
-    fbo.draw(0,0);
+    //fbo.draw(0,0);
+}
+
+void ofApp::SaveImageWrapper() {
+    /*ofFileDialogResult result = ofSystemSaveDialog("dino.png", "Save");
+    if(result.bSuccess) {
+        string path = result.getPath();
+        SaveImage(path);
+    } else {
+        ofSystemAlertDialog("Error saving image!");
+    }
+    */
+    fbo.begin();
+    SaveImage("a");
+    fbo.end();
+}
+
+void ofApp::SaveImage(string filename) {
+    //glReadBuffer(GL_FRONT);
+    //ofSaveScreen(filename + ".png");
+    ofPixels pixels;
+    //ofImage export_img;
+    fbo.readToPixels(pixels);
+    //export_img.setFromPixels(pixels);
+    //export_img.save("somefile.png");
+    ofSaveImage(pixels, filename + ".png", OF_IMAGE_QUALITY_BEST);
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
-
+    if (key == 's') {
+        SaveImage("test");
+    }
 }
 
 //--------------------------------------------------------------

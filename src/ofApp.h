@@ -69,7 +69,9 @@ class ofApp : public ofBaseApp {
 		ofParameter<string> dino_text_;
 		ofParameter<int> brush_thickness_;
 		ofParameter<ofColor> brush_color_;
+		ofParameter<void> save_image;
 
+		// Parameters for active brush, used to create the toggles.
 		ofParameterGroup brush_toggle_parameters_;
 		ofParameter<bool> pen;
 		ofParameter<bool> bubble_brush;
@@ -81,8 +83,10 @@ class ofApp : public ofBaseApp {
 		bool LoadJson(string filepath);
 		int PickRandomDinoIndex(ofxJSONElement dino_info);
 		string RetrieveNewDinoInfo(ofxJSONElement dino_info, int index);
+		void SaveImage(string filename);
 
 		//============================ Listeners. ==============================
 		void DinoInfoButtonToggled(bool& new_val);
 		void BrushToggled(int& index);
+		void SaveImageWrapper();
 };

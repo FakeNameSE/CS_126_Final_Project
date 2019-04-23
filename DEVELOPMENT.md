@@ -31,6 +31,8 @@
 - [] Create an interface to save the image.
 - [] Integrate  popup file browser to select where to save the image.
 - [] Implement saving the image.
+- [] Keep track of old save location to avoid re-prompting with dialog when image
+was already saved.
 - [x] Debug limiting frame rate flickering issues.
 - [] Add button to clear screen.
 ### Nice to haves, pick at least one
