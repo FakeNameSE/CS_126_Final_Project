@@ -143,7 +143,7 @@ void ofApp::setupGui() {
 
     // Set listeners.
     // Save an image.
-    save_image.addListener(this, &ofApp::SaveImageWrapper);
+    //save_image.addListener(this, &ofApp::SaveImageWrapper);
     // Change the brush.
     brush_toggles_->getActiveToggleIndex().addListener(this, &ofApp::BrushToggled);
 	brush_toggles_->setActiveToggle(0);
@@ -191,26 +191,34 @@ void ofApp::drawGui(ofEventArgs & args) {
 Run once a cycle for the canvas.
 */
 void ofApp::draw() {
-    // Render everything after this onto the Fbo renderer instead of the screen.
-    // This prevents flickering issues.
     //fbo.begin();
         // We layer these drawings ontop with push and then pop them off after.
         //ofPushStyle();
 
-        // Select and call the appropriate brush drawing method if the mouse is
-        // pressed.
-        if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT)) {
-            fbo.begin();
-            if (active_brush_ == Brushes::PEN) {
-                DrawWithPen(brush_thickness_, brush_color_);
-            } else if (active_brush_ == Brushes::BUBBLE_BRUSH) {
-                DrawWithBubbleBrush(brush_thickness_, brush_color_);
-            } else if (active_brush_ == Brushes::ERASER) {
-                Eraser(brush_thickness_, kBackgroundColor);
-            }
-            fbo.end();
+    // Select and call the appropriate brush drawing method if the mouse is
+    // pressed.
+    if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT)) {
+        // Render everything after this onto the Fbo renderer instead of the screen.
+        // This prevents flickering issues.
+        fbo.begin();
+        if (active_brush_ == Brushes::PEN) {
+            DrawWithPen(brush_thickness_, brush_color_);
+        } else if (active_brush_ == Brushes::BUBBLE_BRUSH) {
+            DrawWithBubbleBrush(brush_thickness_, brush_color_);
+        } else if (active_brush_ == Brushes::ERASER) {
+            Eraser(brush_thickness_, kBackgroundColor);
         }
-        fbo.draw(0,0);
+        fbo.end();
+    }
+    /*
+    else if (ofGetMousePressed(OF_MOUSE_BUTTON_RIGHT)) {
+        ofNoFill();
+        ofSetColor(brush_color_);
+        ofDrawCircle(ofGetMouseX(), ofGetMouseY(), brush_thickness_);
+    }
+    */
+
+    fbo.draw(0,0);
 
         //ofPopStyle();
     //fbo.end();
@@ -220,35 +228,44 @@ void ofApp::draw() {
     //fbo.draw(0,0);
 }
 
-void ofApp::SaveImageWrapper() {
-    /*ofFileDialogResult result = ofSystemSaveDialog("dino.png", "Save");
-    if(result.bSuccess) {
-        string path = result.getPath();
-        SaveImage(path);
-    } else {
-        ofSystemAlertDialog("Error saving image!");
+void ofApp::SaveImageWrapper(bool pick_new_location) {
+    // Handle picking a new file location if necessary.
+    if (pick_new_location || file_location_ == "") {
+        // Wipe this here to make sure the user properly sets it again, otherwise
+        // aborting from choosing the path would still result in saving the image
+        // to the old path.
+        file_location_ = "";
+        ofFileDialogResult result = ofSystemSaveDialog("dino.png", "Save");
+        if(result.bSuccess) {
+            file_location_ = result.getPath();
+        }
     }
-    */
-    fbo.begin();
-    SaveImage("a");
-    fbo.end();
+
+    // Once the location has been decided, save the image there.
+    if (file_location_ != "") {
+        // Inform the user if saving fails.
+        if (!(SaveImage(file_location_))) {
+            ofSystemAlertDialog("Error saving image!");
+        } else {
+            ofSystemAlertDialog("Image saved!");
+        }
+    }
 }
 
-void ofApp::SaveImage(string filename) {
-    //glReadBuffer(GL_FRONT);
-    //ofSaveScreen(filename + ".png");
+bool ofApp::SaveImage(string filename) {
     ofPixels pixels;
-    //ofImage export_img;
     fbo.readToPixels(pixels);
-    //export_img.setFromPixels(pixels);
-    //export_img.save("somefile.png");
-    ofSaveImage(pixels, filename + ".png", OF_IMAGE_QUALITY_BEST);
+    return ofSaveImage(pixels, filename + ".png", OF_IMAGE_QUALITY_BEST);
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
     if (key == 's') {
-        SaveImage("test");
+        SaveImageWrapper(true);
+    }
+
+    if (key == 'd') {
+        SaveImageWrapper(false);
     }
 }
 

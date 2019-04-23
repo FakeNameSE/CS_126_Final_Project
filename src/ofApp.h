@@ -51,6 +51,7 @@ class ofApp : public ofBaseApp {
 
 		//====================== Other non-GUI fields. =========================
 		Brushes active_brush_;
+		string file_location_ = "";
 
 		//========================== GUI components ============================
 		// The base GUI and panels.
@@ -83,10 +84,10 @@ class ofApp : public ofBaseApp {
 		bool LoadJson(string filepath);
 		int PickRandomDinoIndex(ofxJSONElement dino_info);
 		string RetrieveNewDinoInfo(ofxJSONElement dino_info, int index);
-		void SaveImage(string filename);
+		bool SaveImage(string filename);
 
 		//============================ Listeners. ==============================
 		void DinoInfoButtonToggled(bool& new_val);
 		void BrushToggled(int& index);
-		void SaveImageWrapper();
+		void SaveImageWrapper(bool pick_new_location);
 };
