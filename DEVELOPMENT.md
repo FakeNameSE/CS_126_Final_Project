@@ -23,18 +23,19 @@
 - [] Add tests for JSON parsing.
 - [] Work on theming to make the interface look better.
 - [x] Refactor the different UI components into groups if it would clean up the code.
-- [] Implement basic keyboard shortcuts.
+- [x] Implement basic keyboard shortcuts.
 - [] Flesh out the JSON file with a useful amount of dinosaur facts.
 - [x] Split app into window for canvas and window for GUI.
 - [x] Make closing one window close both.
 - [x] Add titles to windows.
-- [] Create an interface to save the image.
-- [] Integrate  popup file browser to select where to save the image.
-- [] Implement saving the image.
-- [] Keep track of old save location to avoid re-prompting with dialog when image
+- [x] Create an interface to save the image.
+- [x] Integrate  popup file browser to select where to save the image.
+- [x] Implement saving the image.
+- [x] Keep track of old save location to avoid re-prompting with dialog when image
 was already saved.
 - [x] Debug limiting frame rate flickering issues.
-- [] Add button to clear screen.
+- [] Add ability to clear screen.
+- [] Add label with keyboard shortcuts.
 ### Nice to haves, pick at least one
 - [x] Add multiple brushes to toggle between.
 - [x] Replace background with ofFBO to reduce flickering and possibly allow image loading.
@@ -44,7 +45,8 @@ was already saved.
 - [] Add the ability to load an image file to edit.
 - [] Display a sample image of the dinosaur along with its textual information.
 - [] Ability to save the panel layout configuration.
-- [] Replace cursor with circle of appropriate size and color, might not be possible since background repainting is disabled.
+- [x] Replace cursor with circle of appropriate size and color, might not be possible since background repainting is disabled.
+- [x] Add second framebuffer to make preview circle possible.
 ---
 
 ## A Journey into the Abyss, Volume II
@@ -135,3 +137,25 @@ use of the oFBO renderer rather than just drawing directly to the screen. After
 some light footwork on the precipitous cliffs and quite a bit of guesswork,
 modifying the drawing to use the oFBO was successful. Fortunately, this may also
 clear the path in the future for loading images to edit.
+
+### April 22nd and 23rd
+- The expedition continues. Now that the new rendering process has been implemented,
+it became possible to add image saving functionality. While the basics required
+little code, the absence of documentation on FBO saving instead meant relying on
+tinkering with broken forum code. Unfortunately, while the basic functionality was
+relatively straightforward to implement, the combination of a multiwindowed app
+drawing to an FBO dredged up what appears to be a bug or edge case with OpenFramworks.
+Calling the saving functionality from a keypress works, but calling the same save
+method from a button listener creates a corrupted file. It is the suspicion of
+the team that this is the result of the key presses taking place at a different,
+time in the render cycle than button listener events, although wrapping the save
+code in `fbo.begin()` and `fbo.end()` only intermittently solved the issue. The
+intermittent nature of this may mean that multi-threading was involved. Use of `fbo.checkStatus()` to further diagnosis the issue was fruitless. Instead, we must
+again follow the example of Hannibal and take a more circumtuous route, avoiding
+the pesky Gaulish tribes of concurrency bugs and instead relying on key presses
+for saving.
+- An additional obstacle was also encountered when attempting to render a temporary
+circle to the canvas as a previous for the brush. Initial attempts to draw to the
+window directly (not the FBO) somehow changed the FBO background. This was
+eventually solved by overlaying a transparent background FBO over the main canvas
+one for the sole purpose of rendering this preview circle.

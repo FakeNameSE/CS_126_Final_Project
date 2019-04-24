@@ -31,7 +31,10 @@ class ofApp : public ofBaseApp {
 		void gotMessage(ofMessage msg);
 
 		// Framebuffer render that we draw to.
-		ofFbo fbo;
+		// First one is for the canvas.
+		ofFbo canvas_fbo;
+		// Second goes on top for a preview brush that follows the cursor.
+		ofFbo preview_brush_fbo;
 
 		//============================= Constants. =============================
 		const int kMaxCanvasFrameRate = 60;
@@ -39,6 +42,8 @@ class ofApp : public ofBaseApp {
 
 		const ofColor kWhite = ofColor(255, 255, 255, 255);
 		const ofColor kBlack = ofColor(0, 0, 0, 255);
+		const ofColor kEmpty = ofColor(0, 0, 0, 0);
+		// TODO change this to not rely on something else?
 		const ofColor kBackgroundColor = kWhite;
 
 
@@ -85,9 +90,9 @@ class ofApp : public ofBaseApp {
 		int PickRandomDinoIndex(ofxJSONElement dino_info);
 		string RetrieveNewDinoInfo(ofxJSONElement dino_info, int index);
 		bool SaveImage(string filename);
+		void SaveImageWrapper(bool pick_new_location);
 
 		//============================ Listeners. ==============================
 		void DinoInfoButtonToggled(bool& new_val);
 		void BrushToggled(int& index);
-		void SaveImageWrapper(bool pick_new_location);
 };

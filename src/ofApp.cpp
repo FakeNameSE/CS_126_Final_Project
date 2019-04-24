@@ -73,14 +73,24 @@ Run for the canvas window at the beginning.
 void ofApp::setup() {
     // Set background to white.
     ofBackground(kBackgroundColor);
-    //ofSetFrameRate(kMaxCanvasFrameRate);
+    ofSetFrameRate(kMaxCanvasFrameRate);
 
     // Allocate memory for the FBO (framebuffer that we render).
-    fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
+    // This one is transparent and is just used for a preview brush circle that
+    // follows the cursor when it is not drawing.
+    preview_brush_fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
     // Set the FBO background color.
-    fbo.begin();
-       ofClear(kBackgroundColor);
-   fbo.end();
+    preview_brush_fbo.begin();
+    ofClear(kEmpty);
+    preview_brush_fbo.end();
+
+    // This one is for the actual canvas.
+   // Allocate memory for the FBO (framebuffer that we render).
+   canvas_fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
+   // Set the FBO background color.
+   canvas_fbo.begin();
+   ofClear(kBackgroundColor);
+   canvas_fbo.end();
 }
 
 /*
@@ -122,8 +132,6 @@ void ofApp::setupGui() {
 
 
     // Setup the utilities panel.
-    // Save button.
-    utilities_panel_->add(save_image.set("Save Image"));
     // Add toggle for the dinosaur info panel visibility.
     // Just hook this up to the visibility attribute of the panel directly.
     utilities_panel_->add(dino_info_panel_->getVisible().set("Show dinosaur facts", false));
@@ -143,7 +151,6 @@ void ofApp::setupGui() {
 
     // Set listeners.
     // Save an image.
-    //save_image.addListener(this, &ofApp::SaveImageWrapper);
     // Change the brush.
     brush_toggles_->getActiveToggleIndex().addListener(this, &ofApp::BrushToggled);
 	brush_toggles_->setActiveToggle(0);
@@ -191,16 +198,18 @@ void ofApp::drawGui(ofEventArgs & args) {
 Run once a cycle for the canvas.
 */
 void ofApp::draw() {
-    //fbo.begin();
-        // We layer these drawings ontop with push and then pop them off after.
-        //ofPushStyle();
+
+    // Clear the preview fbo (to not leave tracks).
+    preview_brush_fbo.begin();
+    ofClear(kEmpty);
+    preview_brush_fbo.end();
 
     // Select and call the appropriate brush drawing method if the mouse is
     // pressed.
     if (ofGetMousePressed(OF_MOUSE_BUTTON_LEFT)) {
         // Render everything after this onto the Fbo renderer instead of the screen.
         // This prevents flickering issues.
-        fbo.begin();
+        canvas_fbo.begin();
         if (active_brush_ == Brushes::PEN) {
             DrawWithPen(brush_thickness_, brush_color_);
         } else if (active_brush_ == Brushes::BUBBLE_BRUSH) {
@@ -208,24 +217,31 @@ void ofApp::draw() {
         } else if (active_brush_ == Brushes::ERASER) {
             Eraser(brush_thickness_, kBackgroundColor);
         }
-        fbo.end();
+        canvas_fbo.end();
     }
-    /*
-    else if (ofGetMousePressed(OF_MOUSE_BUTTON_RIGHT)) {
-        ofNoFill();
-        ofSetColor(brush_color_);
+    // If we are not drawing, follow the cursor with a preview brush circle.
+    else {
+        preview_brush_fbo.begin();
+        // We want a circle with the current brush color with a black outline,
+        // so draw a slightly bigger black cicle, and then the other on top.
+        ofSetColor(kBlack);
+        // TODO extract to constant.
+        ofDrawCircle(ofGetMouseX(), ofGetMouseY(), 1.2 * brush_thickness_);
+
+        // Set the color to the background if the eraser was selected.
+        if (active_brush_ == Brushes::ERASER) {
+            ofSetColor(kBackgroundColor);
+        } else {
+            ofSetColor(brush_color_);
+        }
+
         ofDrawCircle(ofGetMouseX(), ofGetMouseY(), brush_thickness_);
+        preview_brush_fbo.end();
     }
-    */
 
-    fbo.draw(0,0);
-
-        //ofPopStyle();
-    //fbo.end();
-
-    // Now that we drew everything into this fbo renderer, draw that to the
-    // screen.
-    //fbo.draw(0,0);
+    // Now actually draw the two FBOs on screen, first the preview brush one.
+    canvas_fbo.draw(0,0);
+    preview_brush_fbo.draw(0,0);
 }
 
 void ofApp::SaveImageWrapper(bool pick_new_location) {
@@ -254,9 +270,15 @@ void ofApp::SaveImageWrapper(bool pick_new_location) {
 
 bool ofApp::SaveImage(string filename) {
     ofPixels pixels;
-    fbo.readToPixels(pixels);
+    canvas_fbo.readToPixels(pixels);
     return ofSaveImage(pixels, filename + ".png", OF_IMAGE_QUALITY_BEST);
 }
+
+/*
+void ofApp::LoadImage() {
+    ofLoadImage()
+}
+*/
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
