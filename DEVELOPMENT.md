@@ -12,15 +12,15 @@
 - [x] Add interface to change stroke thickness.
 - [x] Connect stroke thickness and color to actual brush strokes.
 - [x] Add methods to parse and load the JSON data.
-- [] Cleanly handle absent data in the JSON file if necessary.
-- [] Implement useful error handling for these methods.
+- [x] Cleanly handle absent data in the JSON file if necessary.
+- [x] Implement useful error handling for these methods.
 - [x] Create a dinosaur information label.
 - [x] Reduce text overflow issues in label.
 - [x] Add a method to convert the JSON data into a beautified string to display in the label.
 - [x] Add a button to toggle the visibility of a dinosaur information label.
 - [x] Implement a method to randomly select a dinosaur to display information on.
 - [] Modify MakeFile to be able to run Catch2 tests.
-- [] Add tests for JSON parsing.
+- [x] Add tests for JSON parsing.
 - [] Work on theming to make the interface look better.
 - [x] Refactor the different UI components into groups if it would clean up the code.
 - [x] Implement basic keyboard shortcuts.

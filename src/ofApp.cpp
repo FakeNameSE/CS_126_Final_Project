@@ -10,8 +10,11 @@ Returns false if there is an error loading it.
 */
 bool ofApp::LoadJson(string filepath) {
     bool parsingSuccessful = dino_info_json_.open(filepath);
-    //TODO Remove.
-    //ofLogNotice("ofApp::setup") << dino_info_json_.getRawString();
+
+    // Prompt the user if there is an issue loading the file.
+    if (!(parsingSuccessful)) {
+        ofSystemAlertDialog("Error loading dinosaur data!");
+    }
 
     return parsingSuccessful;
 }
@@ -33,10 +36,26 @@ in the JSON file.
 string ofApp::RetrieveNewDinoInfo(ofxJSONElement dino_info, int index) {
     string dino_info_string;
 
+    // Extract the data.
+    string common_name = dino_info["dinosaurs"][index]["common_name"].asString();
+    string scientifc_name = dino_info["dinosaurs"][index]["scientifc_name"].asString();
+    string fact = dino_info["dinosaurs"][index]["fact"].asString();
+
+    // Fill in the fields if they are empty.
+    string placeholder = "";
+    if (common_name == "") {
+        common_name = placeholder;
+    }
+    if (scientifc_name == "") {
+        scientifc_name = placeholder;
+    }
+    if (fact == "") {
+        fact = placeholder;
+    }
+
     // Put the information together nicely.
-    dino_info_string = "Common name: " + dino_info["dinosaurs"][index]["common_name"].asString()
-    + "\n" + "Scientific name: " + dino_info["dinosaurs"][index]["scientifc_name"].asString()
-    + "\n" + "Fact: " + dino_info["dinosaurs"][index]["fact"].asString();
+    dino_info_string = "Common name: " + common_name + "\n" + "Scientific name: "
+    + scientifc_name + "\n" + "Fact: " + fact;
 
     return dino_info_string;
 }
