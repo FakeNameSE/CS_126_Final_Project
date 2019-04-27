@@ -35,7 +35,7 @@
 was already saved.
 - [x] Debug limiting frame rate flickering issues.
 - [] Add ability to clear screen.
-- [] Add label with keyboard shortcuts.
+- [x] Add label with keyboard shortcuts.
 ### Nice to haves, pick at least one
 - [x] Add multiple brushes to toggle between.
 - [x] Replace background with ofFBO to reduce flickering and possibly allow image loading.

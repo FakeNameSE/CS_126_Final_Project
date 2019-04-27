@@ -46,7 +46,6 @@ class ofApp : public ofBaseApp {
 		// TODO change this to not rely on something else?
 		const ofColor kBackgroundColor = kWhite;
 
-
 		//============================== Flags. ================================
 		// Flag for if the JSON data was properly loaded.
 		bool json_loaded_ = false;
@@ -66,13 +65,17 @@ class ofApp : public ofBaseApp {
 		ofxGuiPanel* dino_info_panel_;
 
 		// Groups for UI elements.
-		ofxGuiGroup* labels_;
-		ofxGuiGroup* brush_settings_;
-		ofxGuiGroup* brush_toggles_;
+		ofxGuiGroup* dino_info_group_;
+		ofxGuiGroup* brush_settings_group_;
+		ofxGuiGroup* brush_toggles_group_;
+		ofxGuiGroup* instructions_group_;
 
 		//============================ Parameters. =============================
 		// ofParameters, used to store values that can be set through the UI.
+		// Text to show in the dino information label.
 		ofParameter<string> dino_text_;
+		// Text to show in the instructions label.
+		ofParameter<string> program_instructions_;
 		ofParameter<int> brush_thickness_;
 		ofParameter<ofColor> brush_color_;
 		ofParameter<void> save_image;

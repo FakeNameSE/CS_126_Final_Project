@@ -11,7 +11,7 @@ int main( ){
 	settings.title = "DinoDoodle Canvas";
 	shared_ptr<ofAppBaseWindow> mainWindow = ofCreateWindow(settings);
 
-    settings.setSize(450, 800);
+    settings.setSize(450, 950);
 	settings.setPosition(ofVec2f(0,0));
 	settings.resizable = false;
 	settings.title = "DinoDoodle Controls";

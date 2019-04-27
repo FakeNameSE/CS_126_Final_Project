@@ -128,7 +128,8 @@ void ofApp::setupGui() {
     // Set their default locations to prevent overlapping.
     dino_info_panel_->setPosition(20, 10);
     utilities_panel_->setPosition(20, 150);
-    paint_palette_panel_->setPosition(20, 220);
+    paint_palette_panel_->setPosition(20, 320);
+
 
     // Build the paint palette panel.
     // Setup and add a parameter group to toggle the brush type.
@@ -137,29 +138,37 @@ void ofApp::setupGui() {
 	brush_toggle_parameters_.add(bubble_brush.set("Bubble Brush", false));
     brush_toggle_parameters_.add(eraser.set("Eraser" ,false));
 
-	brush_toggles_ = paint_palette_panel_->addGroup(brush_toggle_parameters_);
-	brush_toggles_->setExclusiveToggles(true);
+	brush_toggles_group_ = paint_palette_panel_->addGroup(brush_toggle_parameters_);
+	brush_toggles_group_->setExclusiveToggles(true);
 
     // Add a group for brush settings.
-    brush_settings_ = paint_palette_panel_->addGroup("Brush Settings:");
+    brush_settings_group_ = paint_palette_panel_->addGroup("Brush Settings:");
     // Setup and add a control for brush thickness.
     brush_thickness_.set("Brush Thickness",10,10,100); // Use the first parameter to set the initial lower value and the min and max value
-    brush_settings_->add(brush_thickness_);
+    brush_settings_group_->add(brush_thickness_);
     // Setup and add a control for brush color.
     brush_color_.set("Color",ofColor(0,0,0,255), ofColor(0,0,0,0), ofColor(255,255,255,255));
-    brush_settings_->add(brush_color_);
+    brush_settings_group_->add(brush_color_);
 
 
     // Setup the utilities panel.
     // Add toggle for the dinosaur info panel visibility.
     // Just hook this up to the visibility attribute of the panel directly.
     utilities_panel_->add(dino_info_panel_->getVisible().set("Show dinosaur facts", false));
+    // Add group and label for instructions on using the program.
+    instructions_group_ = utilities_panel_->addGroup("Program Instructions:");
+    program_instructions_.set(
+      "Press:\n-'s' to save your art to a new location.\n"
+      "-'d' to save it to the last saved location."
+    );
+    instructions_group_->add(program_instructions_);
+
+    // Dino info panel setup.
     // Hide the panel by default.
     dino_info_panel_->getVisible().set(false);
-
     // Setup labels for dinosaur facts, add them to the dino_info_panel_.
-    labels_ = dino_info_panel_->addGroup("The basics:");
-    labels_->add(dino_text_);
+    dino_info_group_ = dino_info_panel_->addGroup("The basics:");
+    dino_info_group_->add(dino_text_);
 
     // Flip the flag depending on whether loading the json was successful.
     json_loaded_ = LoadJson(kDinoDataFilepath);
@@ -171,8 +180,8 @@ void ofApp::setupGui() {
     // Set listeners.
     // Save an image.
     // Change the brush.
-    brush_toggles_->getActiveToggleIndex().addListener(this, &ofApp::BrushToggled);
-	brush_toggles_->setActiveToggle(0);
+    brush_toggles_group_->getActiveToggleIndex().addListener(this, &ofApp::BrushToggled);
+	brush_toggles_group_->setActiveToggle(0);
     active_brush_ = (Brushes) 0;
 
     // To update the dinosaur info for the label.
@@ -193,7 +202,7 @@ Run when the UI window closes, needs to remove listeners and close window.
 */
 void ofApp::exit(){
 	dino_info_panel_->getVisible().removeListener(this, &ofApp::DinoInfoButtonToggled);
-    brush_toggles_->getActiveToggleIndex().removeListener(this, &ofApp::BrushToggled);
+    brush_toggles_group_->getActiveToggleIndex().removeListener(this, &ofApp::BrushToggled);
 
     // Apparently, this is the one that closes when exit is called, so use flag
     // to prevent exiting twice and crashing.
