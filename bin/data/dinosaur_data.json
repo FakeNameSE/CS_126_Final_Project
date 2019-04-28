@@ -1,0 +1,34 @@
+{
+    "dinosaurs":[
+      {
+        "common_name":"Brontosaurus",
+        "scientifc_name":"B. parvus",
+        "fact":"Twice as heavy as today's largest land animal."
+      },
+      {
+        "common_name":"Microraptor",
+        "scientifc_name":"M. zhaoianus",
+        "fact":"Four winged dinosaurs!"
+      },
+      {
+        "common_name":"Scansoriopteryx",
+        "scientifc_name":"S. heilmanni",
+        "fact":"A tree dwelling bird relative."
+      },
+      {
+        "common_name":"Yutyrannus",
+        "scientifc_name":"Y. huali",
+        "fact":"Largest known dinosaur with feathers."
+      },
+      {
+        "common_name":"Antarctopelta",
+        "scientifc_name":"A. oliveroi",
+        "fact":"First dinosaur discovered in Antarctica."
+      },
+      {
+        "common_name":"Deinonychus",
+        "scientifc_name":"D. antirrhopus",
+        "fact":"The real Velociraptor in Jurassic Park."
+      }
+    ]
+}

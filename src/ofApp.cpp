@@ -161,6 +161,7 @@ void ofApp::setupGui() {
       "Press:\n-'s' to save your art to a new location.\n"
       "-'d' to save it to the last saved location.\n"
       "-'c' to clear the canvas.\n"
+      "-'o' to load an image from a file.\n"
     );
     instructions_group_->add(program_instructions_);
 
