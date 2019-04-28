@@ -128,7 +128,7 @@ void ofApp::setupGui() {
     // Set their default locations to prevent overlapping.
     dino_info_panel_->setPosition(20, 10);
     utilities_panel_->setPosition(20, 150);
-    paint_palette_panel_->setPosition(20, 320);
+    paint_palette_panel_->setPosition(20, 350);
 
 
     // Build the paint palette panel.
@@ -159,7 +159,8 @@ void ofApp::setupGui() {
     instructions_group_ = utilities_panel_->addGroup("Program Instructions:");
     program_instructions_.set(
       "Press:\n-'s' to save your art to a new location.\n"
-      "-'d' to save it to the last saved location."
+      "-'d' to save it to the last saved location.\n"
+      "-'c' to clear the canvas.\n"
     );
     instructions_group_->add(program_instructions_);
 
@@ -221,6 +222,12 @@ void ofApp::update() {
 void ofApp::drawGui(ofEventArgs & args) {
 }
 
+
+void ofApp::ClearCanvas() {
+    canvas_fbo.begin();
+    ofClear(kBackgroundColor);
+    canvas_fbo.end();
+}
 
 /*
 Run once a cycle for the canvas.
@@ -313,9 +320,11 @@ void ofApp::keyPressed(int key) {
     if (key == 's') {
         SaveImageWrapper(true);
     }
-
     if (key == 'd') {
         SaveImageWrapper(false);
+    }
+    if (key == 'c') {
+        ClearCanvas();
     }
 }
 

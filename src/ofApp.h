@@ -92,6 +92,7 @@ class ofApp : public ofBaseApp {
 		bool LoadJson(string filepath);
 		int PickRandomDinoIndex(ofxJSONElement dino_info);
 		string RetrieveNewDinoInfo(ofxJSONElement dino_info, int index);
+		void ClearCanvas();
 		bool SaveImage(string filename);
 		void SaveImageWrapper(bool pick_new_location);
 
