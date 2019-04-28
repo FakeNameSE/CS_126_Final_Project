@@ -20,3 +20,5 @@ enum class Brushes {
 void DrawWithPen(int thickness, ofColor color);
 void DrawWithBubbleBrush(int thickness, ofColor color);
 void Eraser(int thickness, ofColor color);
+void PreviewBrush(int thickness, ofColor color, Brushes active_brush, 
+  ofColor background_color);

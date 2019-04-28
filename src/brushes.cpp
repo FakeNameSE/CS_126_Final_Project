@@ -93,3 +93,22 @@ void Eraser(int thickness, ofColor color) {
     // fine-grained control.
     ofDrawCircle(ofGetMouseX(), ofGetMouseY(), thickness);
 }
+
+void PreviewBrush(int thickness, ofColor color, Brushes active_brush,
+  ofColor background_color) {
+    ofColor black = ofColor(0, 0, 0, 255);
+    // We want a circle with the current brush color with a black outline,
+    // so draw a slightly bigger black cicle, and then the other on top.
+    ofSetColor(black);
+    // TODO extract to constant.
+    ofDrawCircle(ofGetMouseX(), ofGetMouseY(), 1.2 * thickness);
+
+    // Set the color to the background if the eraser was selected.
+    if (active_brush == Brushes::ERASER) {
+        ofSetColor(background_color);
+    } else {
+        ofSetColor(color);
+    }
+
+    ofDrawCircle(ofGetMouseX(), ofGetMouseY(), thickness);
+}

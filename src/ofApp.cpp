@@ -256,21 +256,9 @@ void ofApp::draw() {
     }
     // If we are not drawing, follow the cursor with a preview brush circle.
     else {
+        // Draw this to the preview fbo.
         preview_brush_fbo.begin();
-        // We want a circle with the current brush color with a black outline,
-        // so draw a slightly bigger black cicle, and then the other on top.
-        ofSetColor(kBlack);
-        // TODO extract to constant.
-        ofDrawCircle(ofGetMouseX(), ofGetMouseY(), 1.2 * brush_thickness_);
-
-        // Set the color to the background if the eraser was selected.
-        if (active_brush_ == Brushes::ERASER) {
-            ofSetColor(kBackgroundColor);
-        } else {
-            ofSetColor(brush_color_);
-        }
-
-        ofDrawCircle(ofGetMouseX(), ofGetMouseY(), brush_thickness_);
+        PreviewBrush(brush_thickness_, brush_color_, active_brush_, kBackgroundColor);
         preview_brush_fbo.end();
     }
 
