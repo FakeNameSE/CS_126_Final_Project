@@ -270,13 +270,13 @@ void ofApp::draw() {
 void ofApp::SaveImageWrapper(bool pick_new_location) {
     // Handle picking a new file location if necessary.
     if (pick_new_location || file_location_ == "") {
-        // Wipe this here to make sure the user properly sets it again, otherwise
-        // aborting from choosing the path would still result in saving the image
-        // to the old path.
-        file_location_ = "";
         ofFileDialogResult result = ofSystemSaveDialog("dino.png", "Save");
         if(result.bSuccess) {
             file_location_ = result.getPath();
+        }
+        // If the user canceled, just abort.
+        else {
+            return;
         }
     }
 
@@ -294,14 +294,30 @@ void ofApp::SaveImageWrapper(bool pick_new_location) {
 bool ofApp::SaveImage(string filename) {
     ofPixels pixels;
     canvas_fbo.readToPixels(pixels);
+    // Strip the file extension as a precaution since we append .png later.
+    filename = ofFilePath::removeExt(filename);
     return ofSaveImage(pixels, filename + ".png", OF_IMAGE_QUALITY_BEST);
 }
 
-/*
-void ofApp::LoadImage() {
-    ofLoadImage()
+void ofApp::OpenImage() {
+    ofFileDialogResult result = ofSystemLoadDialog("Load File");
+    if(result.bSuccess) {
+        // Set the file location so we can easily save later.
+
+        file_location_ = result.getPath();
+
+        ofImage image;
+        if (image.load(file_location_)) {
+            ClearCanvas();
+            canvas_fbo.begin();
+            image.draw(0,0);
+            canvas_fbo.end();
+        } else {
+            file_location_ = "";
+            ofSystemAlertDialog("Bad image data!");
+        }
+    }
 }
-*/
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
@@ -313,6 +329,9 @@ void ofApp::keyPressed(int key) {
     }
     if (key == 'c') {
         ClearCanvas();
+    }
+    if (key == 'o') {
+        OpenImage();
     }
 }
 

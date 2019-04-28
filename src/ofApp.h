@@ -95,6 +95,7 @@ class ofApp : public ofBaseApp {
 		void ClearCanvas();
 		bool SaveImage(string filename);
 		void SaveImageWrapper(bool pick_new_location);
+		void OpenImage();
 
 		//============================ Listeners. ==============================
 		void DinoInfoButtonToggled(bool& new_val);
