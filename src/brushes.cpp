@@ -1,4 +1,5 @@
 #include "brushes.h"
+#include <math.h>
 #include "ofApp.h"
 
 /*
@@ -11,9 +12,6 @@ moving faster than the draw cycle (does not seem to be fixable).
 To accomplish this we use line interpolation and paint a circle where we were before.
 */
 void DrawWithPen(int thickness, ofColor color) {
-    // TODO remove
-    //ofLogNotice("ofApp::mouse") << ofGetMouseX() << ", " << ofGetMouseY() << std::endl;
-
     // Set the color of the brush.
     ofSetColor(color);
 
@@ -44,6 +42,45 @@ void DrawWithPen(int thickness, ofColor color) {
     for (int x = ofGetPreviousMouseX(); x < ofGetMouseX(); x += (thickness / kBrushInterpolationStepCoeff)) {
         ofDrawCircle(x, slope * (x - ofGetPreviousMouseX()) + ofGetPreviousMouseY(), thickness * kBrushInterpolationSizeCoeff);
     }
+}
+
+/*
+Helper method to draw a brush consisting of triangles roughly following the mouse.
+*/
+void DrawWithTriangles(int thickness, ofColor color) {
+    ofSetColor(color);
+
+    ofVec2f mousePos(ofGetMouseX(), ofGetMouseY());
+    // We initialize a triangle at the origin pointing to the right.
+    ofVec2f point_1(0, thickness);
+    ofVec2f point_2(thickness, 0);
+    ofVec2f point_3(0, -1 * thickness);
+
+    // Now we use some trig to calculate the angle to rotate the triangle such
+    // that it is facing the mouse.
+    float opposite = ofGetMouseY() - ofGetPreviousMouseY();
+    float adjacent = ofGetMouseX() - ofGetPreviousMouseX();
+    float rotation_rads = atan2(opposite, adjacent);
+    // Convert from radians to degrees.
+    float rotation_degrees = glm::degrees(rotation_rads);
+    // Rotate the tip of the triangle.
+    point_2.rotate(glm::degrees(rotation_degrees));
+
+    // Here we shift all three vertices so the triangle is next to the cursor.
+    point_1 += mousePos;
+    point_2 += mousePos;
+    point_3 += mousePos;
+
+    // Finally, draw it.
+    ofDrawTriangle(point_1, point_2, point_3);
+
+    // And to add some pizazz, draw a few more near there.
+    for (int i = 0; i < 3; i++) {
+        ofVec2f offset(ofRandom(-3, 3), ofRandom(-3, -3));
+        ofDrawTriangle(point_1, point_2 + offset, point_3);
+    }
+
+
 }
 
 /*

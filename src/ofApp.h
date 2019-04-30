@@ -71,9 +71,10 @@ class ofApp : public ofBaseApp {
 
 		// Parameters for active brush, used to create the toggles.
 		ofParameterGroup brush_toggle_parameters_;
-		ofParameter<bool> pen;
-		ofParameter<bool> bubble_brush;
-		ofParameter<bool> eraser;
+		ofParameter<bool> pen_;
+		ofParameter<bool> triangle_brush_;
+		ofParameter<bool> bubble_brush_;
+		ofParameter<bool> eraser_;
 
 		ofxJSONElement dino_info_json_;
 

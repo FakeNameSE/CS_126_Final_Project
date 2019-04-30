@@ -132,15 +132,16 @@ void ofApp::setupGui() {
     // Set their default locations to prevent overlapping.
     dino_info_panel_->setPosition(20, 10);
     utilities_panel_->setPosition(20, 150);
-    paint_palette_panel_->setPosition(20, 350);
+    paint_palette_panel_->setPosition(20, 370);
 
 
     // Build the paint palette panel.
     // Setup and add a parameter group to toggle the brush type.
     brush_toggle_parameters_.setName("Brushes");
-	brush_toggle_parameters_.add(pen.set("Pen", true));
-	brush_toggle_parameters_.add(bubble_brush.set("Bubble Brush", false));
-    brush_toggle_parameters_.add(eraser.set("Eraser" ,false));
+	brush_toggle_parameters_.add(pen_.set("Pen", true));
+    brush_toggle_parameters_.add(triangle_brush_.set("Triangle Brush", false));
+	brush_toggle_parameters_.add(bubble_brush_.set("Bubble Brush", false));
+    brush_toggle_parameters_.add(eraser_.set("Eraser" ,false));
 
 	brush_toggles_group_ = paint_palette_panel_->addGroup(brush_toggle_parameters_);
 	brush_toggles_group_->setExclusiveToggles(true);
@@ -165,7 +166,7 @@ void ofApp::setupGui() {
       "Press:\n-'s' to save your art to a new location.\n"
       "-'d' to save it to the last saved location.\n"
       "-'c' to clear the canvas.\n"
-      "-'o' to load an image from a file.\n"
+      "-'o' to load an image from a file.\n\n"
     );
     instructions_group_->add(program_instructions_);
 
@@ -225,7 +226,9 @@ Left blank, the UI window doesn't do anything fancy at draw time.
 void ofApp::drawGui(ofEventArgs & args) {
 }
 
-
+/*
+Simple helper method that clears the canvas fbo.
+*/
 void ofApp::ClearCanvas() {
     canvas_fbo.begin();
     ofClear(kBackgroundColor);
@@ -252,6 +255,8 @@ void ofApp::draw() {
             DrawWithPen(brush_thickness_, brush_color_);
         } else if (active_brush_ == Brushes::BUBBLE_BRUSH) {
             DrawWithBubbleBrush(brush_thickness_, brush_color_);
+        } else if (active_brush_ == Brushes::TRIANGLE_BRUSH) {
+            DrawWithTriangles(brush_thickness_, brush_color_);
         } else if (active_brush_ == Brushes::ERASER) {
             Eraser(brush_thickness_, kBackgroundColor);
         }
@@ -299,6 +304,10 @@ void ofApp::SaveImageWrapper(bool pick_new_location) {
     }
 }
 
+/*
+Method that saves the fbo to a specified file, returns true on success and false
+on failure.
+*/
 bool ofApp::SaveImage(string filename) {
     ofPixels pixels;
     canvas_fbo.readToPixels(pixels);
@@ -328,7 +337,7 @@ void ofApp::OpenImageWrapper() {
 
 /*
 Method to open a specified file, it will render the image to the fbo and return
-true on success, false on failure. 
+true on success, false on failure.
 */
 bool ofApp::OpenImage(string filename) {
     ofImage image;
