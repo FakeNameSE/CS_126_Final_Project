@@ -308,27 +308,37 @@ bool ofApp::SaveImage(string filename) {
 }
 
 /*
-
+Method that wraps around OpenImage to provide a file choosing dialog and error
+handling.
 */
-void ofApp::OpenImage() {
+void ofApp::OpenImageWrapper() {
     ofFileDialogResult result = ofSystemLoadDialog("Load File");
 
     if(result.bSuccess) {
-        ofImage image;
-
-        if (image.load(result.getPath())) {
+        if (OpenImage(result.getPath())) {
             // Set the file location so we can easily save later.
             file_location_ = result.getPath();
-            ClearCanvas();
-            canvas_fbo.begin();
-            image.draw(0,0);
-            canvas_fbo.end();
         }
         // Handle a bad file.
         else {
             ofSystemAlertDialog("Bad image data!");
         }
     }
+}
+
+/*
+Method to open a specified file, it will render the image to the fbo and return
+true on success, false on failure. 
+*/
+bool ofApp::OpenImage(string filename) {
+    ofImage image;
+    bool image_loading_succeeded = image.load(filename);
+    ClearCanvas();
+    canvas_fbo.begin();
+    image.draw(0,0);
+    canvas_fbo.end();
+
+    return image_loading_succeeded;
 }
 
 /*
@@ -345,7 +355,7 @@ void ofApp::keyPressed(int key) {
         ClearCanvas();
     }
     if (key == 'o') {
-        OpenImage();
+        OpenImageWrapper();
     }
 }
 
@@ -358,16 +368,11 @@ void ofApp::dragEvent(ofDragInfo dragInfo) {
 
     // Try loading the file into an image object, the file paths are stored in a
     // vector, hence the dereferencing of the first element.
-    if (image.load(dragInfo.files.at(0))) {
+    if (OpenImage(dragInfo.files.at(0))) {
         file_location_ = dragInfo.files.at(0);
-        ClearCanvas();
-        canvas_fbo.begin();
-        image.draw(0,0);
-        canvas_fbo.end();
     }
     // If things did not work out, let the user know.
     else {
-        file_location_ = "";
         ofSystemAlertDialog("Bad image data!");
     }
 }

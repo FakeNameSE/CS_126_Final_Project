@@ -14,21 +14,10 @@ class ofApp : public ofBaseApp {
 		void setupGui();
 		void exitGui(ofEventArgs & args);
 		void exit();
-		void update();
 		void draw();
 		void drawGui(ofEventArgs & args);
-
 		void keyPressed(int key);
-		void keyReleased(int key);
-		void mouseMoved(int x, int y);
-		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
-		void mouseReleased(int x, int y, int button);
-		void mouseEntered(int x, int y);
-		void mouseExited(int x, int y);
-		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
 
 		// Framebuffer render that we draw to.
 		// First one is for the canvas.
@@ -95,7 +84,8 @@ class ofApp : public ofBaseApp {
 		void ClearCanvas();
 		bool SaveImage(string filename);
 		void SaveImageWrapper(bool pick_new_location);
-		void OpenImage();
+		bool OpenImage(string filename);
+		void OpenImageWrapper();
 
 		//============================ Listeners. ==============================
 		void DinoInfoButtonToggled(bool& new_val);
