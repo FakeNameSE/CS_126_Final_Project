@@ -81,6 +81,10 @@ void ofApp::DinoInfoButtonToggled(bool& new_val) {
     }
 }
 
+/*
+Simple helper method to set the active brush to the brush toggled in the UI.
+This is triggered by a button listener.
+*/
 void ofApp::BrushToggled(int& index) {
     // Convert the index number to the appropriate enum class type.
     active_brush_ = (Brushes) index;
@@ -215,11 +219,9 @@ void ofApp::exit(){
 	}
 }
 
-//--------------------------------------------------------------
-void ofApp::update() {
-}
-
-//--------------------------------------------------------------
+/*
+Left blank, the UI window doesn't do anything fancy at draw time.
+*/
 void ofApp::drawGui(ofEventArgs & args) {
 }
 
@@ -268,6 +270,11 @@ void ofApp::draw() {
     preview_brush_fbo.draw(0,0);
 }
 
+/*
+Wrapper around image saving that deals with providing providing a file choosing
+dialog. This will provide an interface to pick a new location if the argument is
+true or no location has been set yet (first save).
+*/
 void ofApp::SaveImageWrapper(bool pick_new_location) {
     // Handle picking a new file location if necessary.
     if (pick_new_location || file_location_ == "") {
@@ -300,27 +307,33 @@ bool ofApp::SaveImage(string filename) {
     return ofSaveImage(pixels, filename + ".png", OF_IMAGE_QUALITY_BEST);
 }
 
+/*
+
+*/
 void ofApp::OpenImage() {
     ofFileDialogResult result = ofSystemLoadDialog("Load File");
+
     if(result.bSuccess) {
-        // Set the file location so we can easily save later.
-
-        file_location_ = result.getPath();
-
         ofImage image;
-        if (image.load(file_location_)) {
+
+        if (image.load(result.getPath())) {
+            // Set the file location so we can easily save later.
+            file_location_ = result.getPath();
             ClearCanvas();
             canvas_fbo.begin();
             image.draw(0,0);
             canvas_fbo.end();
-        } else {
-            file_location_ = "";
+        }
+        // Handle a bad file.
+        else {
             ofSystemAlertDialog("Bad image data!");
         }
     }
 }
 
-//--------------------------------------------------------------
+/*
+OF method that triggers on keypresses, allows us to handle saving, opening, etc.
+*/
 void ofApp::keyPressed(int key) {
     if (key == 's') {
         SaveImageWrapper(true);
@@ -336,52 +349,25 @@ void ofApp::keyPressed(int key) {
     }
 }
 
-//--------------------------------------------------------------
-void ofApp::keyReleased(int key) {
+/*
+OF method to handle things being dragged to the window. Here, we try to load as
+an image the dragged file, or prompt the user if the file is bad.
+*/
+void ofApp::dragEvent(ofDragInfo dragInfo) {
+    ofImage image;
 
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y) {
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){
-
+    // Try loading the file into an image object, the file paths are stored in a
+    // vector, hence the dereferencing of the first element.
+    if (image.load(dragInfo.files.at(0))) {
+        file_location_ = dragInfo.files.at(0);
+        ClearCanvas();
+        canvas_fbo.begin();
+        image.draw(0,0);
+        canvas_fbo.end();
+    }
+    // If things did not work out, let the user know.
+    else {
+        file_location_ = "";
+        ofSystemAlertDialog("Bad image data!");
+    }
 }
