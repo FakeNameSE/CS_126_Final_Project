@@ -139,6 +139,7 @@ void ofApp::setupGui() {
     // Setup and add a parameter group to toggle the brush type.
     brush_toggle_parameters_.setName("Brushes");
 	brush_toggle_parameters_.add(pen_.set("Pen", true));
+    brush_toggle_parameters_.add(calligraphy_brush_.set("Linear Calligraphy Brush", false));
     brush_toggle_parameters_.add(triangle_brush_.set("Triangle Brush", false));
 	brush_toggle_parameters_.add(bubble_brush_.set("Bubble Brush", false));
     brush_toggle_parameters_.add(eraser_.set("Eraser" ,false));
@@ -251,15 +252,20 @@ void ofApp::draw() {
         // Render everything after this onto the Fbo renderer instead of the screen.
         // This prevents flickering issues.
         canvas_fbo.begin();
+
+        // Draw with the selected brush
         if (active_brush_ == Brushes::PEN) {
             DrawWithPen(brush_thickness_, brush_color_);
-        } else if (active_brush_ == Brushes::BUBBLE_BRUSH) {
-            DrawWithBubbleBrush(brush_thickness_, brush_color_);
+        } else if (active_brush_ == Brushes::CALLIGRAPHY_BRUSH) {
+            DrawWithCalligraphyBrush(brush_thickness_, brush_color_);
         } else if (active_brush_ == Brushes::TRIANGLE_BRUSH) {
             DrawWithTriangles(brush_thickness_, brush_color_);
+        } else if (active_brush_ == Brushes::BUBBLE_BRUSH) {
+            DrawWithBubbleBrush(brush_thickness_, brush_color_);
         } else if (active_brush_ == Brushes::ERASER) {
             Eraser(brush_thickness_, kBackgroundColor);
         }
+
         canvas_fbo.end();
     }
     // If we are not drawing, follow the cursor with a preview brush circle.

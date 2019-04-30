@@ -35,13 +35,41 @@ void DrawWithPen(int thickness, ofColor color) {
 
     float slope = screen_y_change / screen_x_change;
 
-    // TODO remove.
-    //ofLogNotice("ofApp::slope") << screen_x_change << " " << screen_y_change << " " << slope << std::endl;
-
     // Now we plot circles along this line to try to fill in some blank areas.
     for (int x = ofGetPreviousMouseX(); x < ofGetMouseX(); x += (thickness / kBrushInterpolationStepCoeff)) {
         ofDrawCircle(x, slope * (x - ofGetPreviousMouseX()) + ofGetPreviousMouseY(), thickness * kBrushInterpolationSizeCoeff);
     }
+}
+
+/*
+Brush based off of pen but for which the radius and opacity decrease linearly with
+respect to the speed of the brush (how far the cursor moved in a cycle).
+*/
+void DrawWithCalligraphyBrush(int thickness, ofColor color) {
+    // Create vectors for the mouse location.
+    ofVec2f mouse_pos(ofGetMouseX(), ofGetMouseY());
+    ofVec2f prev_mouse_pos(ofGetPreviousMouseX(), ofGetPreviousMouseY());
+    int new_thickness = 0;
+    ofColor new_color = color;
+
+    int distance_traveled = mouse_pos.distance(prev_mouse_pos);
+
+    // Apply a simple linear function to make thickness and opacity decrease with
+    // spead if the stroke. We use absolute value to introduce some irregularities
+    // and avoid negatives.
+    new_color.a = std::abs(color.a - kCalligraphyAlphaDecrease * distance_traveled);
+    new_thickness = std::abs(thickness - kCalligraphyThicknessDecrease * distance_traveled);
+
+    // These values got way to big if they got really small and the absolute value
+    // flipped the sign. In this case, put in an inkblot (initial size).
+    if (new_thickness > thickness || new_thickness < kMinCircleRadius
+      || new_color.a > kMaxAlpha) {
+        new_thickness = thickness;
+        new_color = color;
+    }
+
+    // Finally, draw using the pen and these modified parameters.
+    DrawWithPen(new_thickness, new_color);
 }
 
 /*
@@ -50,7 +78,7 @@ Helper method to draw a brush consisting of triangles roughly following the mous
 void DrawWithTriangles(int thickness, ofColor color) {
     ofSetColor(color);
 
-    ofVec2f mousePos(ofGetMouseX(), ofGetMouseY());
+    ofVec2f mouse_pos(ofGetMouseX(), ofGetMouseY());
     // We initialize a triangle at the origin pointing to the right.
     ofVec2f point_1(0, thickness);
     ofVec2f point_2(thickness, 0);
@@ -67,20 +95,20 @@ void DrawWithTriangles(int thickness, ofColor color) {
     point_2.rotate(glm::degrees(rotation_degrees));
 
     // Here we shift all three vertices so the triangle is next to the cursor.
-    point_1 += mousePos;
-    point_2 += mousePos;
-    point_3 += mousePos;
+    point_1 += mouse_pos;
+    point_2 += mouse_pos;
+    point_3 += mouse_pos;
 
     // Finally, draw it.
     ofDrawTriangle(point_1, point_2, point_3);
 
     // And to add some pizazz, draw a few more near there.
-    for (int i = 0; i < 3; i++) {
-        ofVec2f offset(ofRandom(-3, 3), ofRandom(-3, -3));
+    int num_triangles = ofRandom(0, kTriangleVariance);
+    for (int i = 0; i < num_triangles; i++) {
+        ofVec2f offset(ofRandom(-1 * kTriangleVariance, kTriangleVariance),
+          ofRandom(-1 * kTriangleVariance, kTriangleVariance));
         ofDrawTriangle(point_1, point_2 + offset, point_3);
     }
-
-
 }
 
 /*
