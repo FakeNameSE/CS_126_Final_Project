@@ -61,11 +61,11 @@ void DrawWithCalligraphyBrush(int thickness, ofColor color) {
     new_thickness = std::abs(thickness - kCalligraphyThicknessDecrease * distance_traveled);
 
     // These values got way to big if they got really small and the absolute value
-    // flipped the sign. In this case, put in an inkblot (initial size).
+    // flipped the sign. In this case, it would be invisible, so do nothing.
+    // OF crashed drawing circles smaller than this.
     if (new_thickness > thickness || new_thickness < kMinCircleRadius
       || new_color.a > kMaxAlpha) {
-        new_thickness = thickness;
-        new_color = color;
+          return;
     }
 
     // Finally, draw using the pen and these modified parameters.
