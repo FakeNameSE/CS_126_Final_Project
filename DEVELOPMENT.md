@@ -204,3 +204,4 @@ While no online resource existed to help, tinkering revealed that putting two
 it. This does not seem to be a problem with the code however, but rather with
 either OpenFramworks (nothing on this on its GitHub or forum) or possibly the
 window manager this expedition has been conducted with (KDE with KWin).
+- At long last, the expedition has been completed. Final cleanup work on extracting certain values to constants was uneventful, and the voyage ended with a brief and successful struggle with screen recording and converting an mp4 to a gif using `ffmpeg`.
