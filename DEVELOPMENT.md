@@ -19,12 +19,10 @@
 - [x] Add a method to convert the JSON data into a beautified string to display in the label.
 - [x] Add a button to toggle the visibility of a dinosaur information label.
 - [x] Implement a method to randomly select a dinosaur to display information on.
-- [] Modify MakeFile to be able to run Catch2 tests.
 - [x] Add tests for JSON parsing.
-- [] Work on theming to make the interface look better.
 - [x] Refactor the different UI components into groups if it would clean up the code.
 - [x] Implement basic keyboard shortcuts.
-- [] Flesh out the JSON file with a useful amount of dinosaur facts.
+- [x] Flesh out the JSON file with a useful amount of dinosaur facts.
 - [x] Split app into window for canvas and window for GUI.
 - [x] Make closing one window close both.
 - [x] Add titles to windows.
@@ -34,19 +32,24 @@
 - [x] Keep track of old save location to avoid re-prompting with dialog when image
 was already saved.
 - [x] Debug limiting frame rate flickering issues.
-- [] Add ability to clear screen.
+- [x] Add ability to clear screen.
 - [x] Add label with keyboard shortcuts.
 ### Nice to haves, pick at least one
 - [x] Add multiple brushes to toggle between.
 - [x] Replace background with ofFBO to reduce flickering and possibly allow image loading.
 - [x] Add an eraser.
 - [x] Restructure drawing logic to enable switching brushes.
+- [x] Add a calligraphy brush that varies opacity and thickness by speed.
+- [x] Add a spiky triangle based brush.
 - [] Add the ability to overlay the drawn image over a background.
-- [] Add the ability to load an image file to edit.
+- [x] Add the ability to load an image file to edit.
 - [] Display a sample image of the dinosaur along with its textual information.
 - [] Ability to save the panel layout configuration.
 - [x] Replace cursor with circle of appropriate size and color, might not be possible since background repainting is disabled.
+- [x] Refactor preview brush into brushes.cpp.
 - [x] Add second framebuffer to make preview circle possible.
+- [x] Add drag and drop functionality to load a file.
+
 ---
 
 ## A Journey into the Abyss, Volume II
@@ -159,3 +162,45 @@ circle to the canvas as a previous for the brush. Initial attempts to draw to th
 window directly (not the FBO) somehow changed the FBO background. This was
 eventually solved by overlaying a transparent background FBO over the main canvas
 one for the sole purpose of rendering this preview circle.
+
+### April 27th
+- The trek continues unabated. Worries of overextension (in the military parlance)
+have arisen though, with the supply line of dependent helper methods stretching
+out as progress continues to be made. To lessen the risk of disruption by the
+pesky Gaulish bugs, small tests were added for the JSON loading.
+- Unfortunately, the direct path of using old MP CMake files to add a test target
+was blocked. The OpenFramworks provided MakeFile created by the projectGenerator in reality only takes in a few specific configuration arguments and then references a much more complicated one included in the library, making modification of the MakeFile
+to ease building untenable. The expedition was forced instead to rely on manually
+running test cases.
+- Review of expedition final objectives was also warranted as the festering city
+of Rome approaches. The ofxGuiExtended default theme is attractive enough to
+invest resources in other features (drag and drop and new brushes) instead, and
+there are not enough configurations that could usefully be made persistent across
+launches to warrant the added complexity of saving layout configuration.
+
+### April 29th and 30th
+- At long last the end approaches! Drag and drop was implemented relatively
+painlessly using a provided example and the hard earned understanding of FBOs.
+- Drag and drop provided an opportunity to refactor the load method to resemble
+save with core loading code and a wrapper for the file dialog.
+- Before continuing on the mission, it also became necessary to add documentation
+to the helper methods that had been added.
+- The wonders of middle and high school math also returned in full force, with
+the use of trig and linear functions for the triangle based brush and calligraphy
+brush.
+- However, with OF there is no such thing as a free lunch. An attempt to add a
+calligraphy brush by using the pen and passing it a modified thickness and opacity
+calculated by applying a decreasing linear function to the distance traveled by
+the cursor in the last cycle (in a sense its speed) resulted in an arduous voyage
+in which countless liters of blood and tears were spilled. As it turns out, OF
+has the undocumented bug/feature of crashing the graphical application without
+warning or error message when asked to draw a circle with a radius less than three.
+After much debugging this was uncovered, and a hard limit placed on the minimum
+size of a calligraphy circle.
+- An old fiend has also returned for the last time, text overflowing from labels.
+While no online resource existed to help, tinkering revealed that putting two
+`ofParameter<string>`'s inside mitigate this.
+- Another issue has been that the popup dialog window does not steal focus when it should except for the first opened one, and so requires moving the canvas to access
+it. This does not seem to be a problem with the code however, but rather with
+either OpenFramworks (nothing on this on its GitHub or forum) or possibly the
+window manager this expedition has been conducted with (KDE with KWin).
