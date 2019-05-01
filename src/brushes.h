@@ -25,6 +25,15 @@ const int kMaxAlpha = 255;
 // Variance in triangle position and number for the triangle brush.
 const int kTriangleVariance = 3;
 
+//---------------------------------- Bubble ----------------------------------
+
+// The lower this value, the more circles we get.
+const int kRadiusStepSize = 3;
+//Determines the lower bound in dimness for the color we select for each circle.
+const float kDimmingFactor = 0.8;
+
+//----------------------------------- Preview ----------------------------------
+const float kOutlineRatio = 1.2;
 
 enum class Brushes {
   PEN,

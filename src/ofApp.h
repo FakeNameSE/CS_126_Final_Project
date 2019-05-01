@@ -1,9 +1,10 @@
 #pragma once
 
 #include "ofMain.h"
-#include "brushes.h"
 #include "ofxGuiExtended.h"
 #include "ofxJSONElement.h"
+#include <utility>
+#include "brushes.h"
 
 using std::string;
 
@@ -26,13 +27,15 @@ class ofApp : public ofBaseApp {
 		ofFbo preview_brush_fbo;
 
 		//============================= Constants. =============================
+		const std::pair<int, int> kDinoPanelPanelCoords = {20, 10};
+		const std::pair<int, int> kUtililtyPanelCoords = {20, 150};
+		const std::pair<int, int> kPalettePanelCoords = {20, 410};
 		const int kMaxCanvasFrameRate = 60;
 		const string kDinoDataFilepath = "dinosaur_data.json";
 
 		const ofColor kWhite = ofColor(255, 255, 255, 255);
 		const ofColor kBlack = ofColor(0, 0, 0, 255);
 		const ofColor kEmpty = ofColor(0, 0, 0, 0);
-		// TODO change this to not rely on something else?
 		const ofColor kBackgroundColor = kWhite;
 
 		//============================== Flags. ================================

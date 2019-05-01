@@ -130,9 +130,9 @@ void ofApp::setupGui() {
     dino_info_panel_ = gui_.addPanel("Dinosaur Facts");
 
     // Set their default locations to prevent overlapping.
-    dino_info_panel_->setPosition(20, 10);
-    utilities_panel_->setPosition(20, 150);
-    paint_palette_panel_->setPosition(20, 410);
+    dino_info_panel_->setPosition(kDinoPanelPanelCoords.first, kDinoPanelPanelCoords.second);
+    utilities_panel_->setPosition(kUtililtyPanelCoords.first, kUtililtyPanelCoords.second);
+    paint_palette_panel_->setPosition(kPalettePanelCoords.first, kPalettePanelCoords.second);
 
 
     // Build the paint palette panel.
