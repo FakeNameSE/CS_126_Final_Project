@@ -7,7 +7,7 @@ int main( ){
 	ofGLFWWindowSettings settings;
     settings.setSize(1200, 950);
 	settings.setPosition(ofVec2f(455,0));
-	settings.resizable = true;
+	settings.resizable = false;
 	settings.title = "DinoDoodle Canvas";
 	shared_ptr<ofAppBaseWindow> mainWindow = ofCreateWindow(settings);
 

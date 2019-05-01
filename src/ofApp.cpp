@@ -132,7 +132,7 @@ void ofApp::setupGui() {
     // Set their default locations to prevent overlapping.
     dino_info_panel_->setPosition(20, 10);
     utilities_panel_->setPosition(20, 150);
-    paint_palette_panel_->setPosition(20, 370);
+    paint_palette_panel_->setPosition(20, 410);
 
 
     // Build the paint palette panel.
@@ -164,12 +164,20 @@ void ofApp::setupGui() {
     // Add group and label for instructions on using the program.
     instructions_group_ = utilities_panel_->addGroup("Program Instructions:");
     program_instructions_.set(
-      "Press:\n-'s' to save your art to a new location.\n"
-      "-'d' to save it to the last saved location.\n"
-      "-'c' to clear the canvas.\n"
-      "-'o' to load an image from a file.\n\n"
+R"(Drag and drop to open images is supported.
+Press:
+    -'s' to save your art to a new location.
+    -'d' to save it to the last saved location.
+    -'c' to clear the canvas.
+    -'o' to load an image from a file.
+)"
     );
+    welcome_message_.set("Have fun!");
+
+    // We need to separate the label into two params worth of strings because
+    // putting it all in one leads to text overflowing.
     instructions_group_->add(program_instructions_);
+    instructions_group_->add(welcome_message_);
 
     // Dino info panel setup.
     // Hide the panel by default.

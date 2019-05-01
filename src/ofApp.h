@@ -65,9 +65,10 @@ class ofApp : public ofBaseApp {
 		ofParameter<string> dino_text_;
 		// Text to show in the instructions label.
 		ofParameter<string> program_instructions_;
+		ofParameter<string> welcome_message_;
+		// Brush parameters.
 		ofParameter<int> brush_thickness_;
 		ofParameter<ofColor> brush_color_;
-		ofParameter<void> save_image;
 
 		// Parameters for active brush, used to create the toggles.
 		ofParameterGroup brush_toggle_parameters_;
